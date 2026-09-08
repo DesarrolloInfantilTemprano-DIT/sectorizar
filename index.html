@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>2027 Registro Familiar</title>
+  <title>Sistema SIGIS_FED - Registro Familiar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -19,12 +19,75 @@
 </head>
 <body class="bg-slate-100 min-h-screen pb-12 font-sans text-slate-800">
 
+  <!-- DATALIST GLOBAL DE SECTORES RESTRINGIDOS -->
+  <datalist id="listaSectores">
+    <option value="933-AA.VV. 25 DE ENERO"></option>
+    <option value="933-AA.VV. CARMEN GARAY"></option>
+    <option value="933-AA.VV. FUNDO NUEVA ESPERANZA"></option>
+    <option value="933-AA.VV. LOS LAURELES"></option>
+    <option value="933-AA.VV. PUEBLO LIBRE"></option>
+    <option value="933-AA.VV.01 DE MAYO"></option>
+    <option value="933-AA.VV.01 DE SETIEMBRE"></option>
+    <option value="933-AA.VV.07 DE MAYO"></option>
+    <option value="933-AA.VV.09 DE AGOSTO"></option>
+    <option value="933-AA.VV.15 DE AGOSTO"></option>
+    <option value="933-AA.VV.CESAR VALLEJO"></option>
+    <option value="933-AA.VV.CIUDAD COLINA"></option>
+    <option value="933-AA.VV.COLONIA TINGALESA"></option>
+    <option value="933-AA.VV.EDUARDO VILLASANTE"></option>
+    <option value="933-AA.VV.JOSE CARLOS MARIATEGUI"></option>
+    <option value="933-AA.VV.JOSE OLAYA BALANDRA"></option>
+    <option value="933-AA.VV.JUAN PICON QUEDO"></option>
+    <option value="933-AA.VV.JULIO MARTINEZ"></option>
+    <option value="933-AA.VV.LAS ALMENDRAS"></option>
+    <option value="933-AA.VV.LAS AMAZONAS"></option>
+    <option value="933-AA.VV.LAS PALMERAS"></option>
+    <option value="933-AA.VV.LOS ANGELES"></option>
+    <option value="933-AA.VV.LOS JARDINES"></option>
+    <option value="933-AA.VV.LOS PINOS"></option>
+    <option value="933-AA.VV.MARIA PARADO DE BELLIDO"></option>
+    <option value="933-AA.VV.MONTERRICO"></option>
+    <option value="933-AA.VV.NUEVA ESPERANZA"></option>
+    <option value="933-AA.VV.NUEVA JERUSALEN"></option>
+    <option value="933-AA.VV.NUEV AMANECER"></option>
+    <option value="933-AA.VV.PADRES DE FAMILIA"></option>
+    <option value="933-AA.VV.PANTOJA"></option>
+    <option value="933-AA.VV.PEDREGAL"></option>
+    <option value="933-AA.VV.POBLADORES DE CASTILLO GRANDE"></option>
+    <option value="933-AA.VV.SAN CARLOS"></option>
+    <option value="933-AA.VV.SAN ISIDRO"></option>
+    <option value="933-AA.VV.SAN MIGUEL"></option>
+    <option value="933-AA.VV.SANTA ROSA"></option>
+    <option value="933-SOL NACIENTE"></option>
+    <option value="933-COMUNIDAD ASERRADERO"></option>
+    <option value="933-COMUNIDAD CAPITAN SOTO"></option>
+    <option value="933-COMUNIDAD HUANGANAPAMPA"></option>
+    <option value="933-COMUNIDAD HUAYNACAPAC"></option>
+    <option value="933-COMUNIDAD JACINTILLO"></option>
+    <option value="933-COMUNIDAD LA CURVA"></option>
+    <option value="933-COMUNIDAD LA FLORIDA"></option>
+    <option value="933-COMUNIDAD MANCO CAPAC"></option>
+    <option value="933-COMUNIDAD MANTARO"></option>
+    <option value="933-COMUNIDAD MERCED DE LOCRO"></option>
+    <option value="933-COMUNIDAD MOYANO"></option>
+    <option value="933-COMUNIDAD NUEVA ALTURA"></option>
+    <option value="933-COMUNIDAD PACHACUTEC"></option>
+    <option value="933-COMUNIDAD PAPAYAL"></option>
+    <option value="933-COMUNIDAD PICUROYACU"></option>
+    <option value="933-COMUNIDAD SANTA ROSA DE CASTILLA"></option>
+    <option value="933-COMUNIDAD SHAMIRO"></option>
+    <option value="933-COMUNIDAD SINCHI ROCCA"></option>
+    <option value="933-COMUNIDAD VENADO PAMPA"></option>
+    <option value="933-COMUNIDAD YURIMAGUAS"></option>
+    <option value="933-SIN SECTOR"></option>
+  </datalist>
+
   <header class="bg-blue-700 text-white shadow-lg mb-6">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <i data-lucide="users" class="w-8 h-8"></i>
         <div>
-          <h1 class="text-xl font-bold leading-tight">Censo por Ficha Familiar</h1>
+          <h1 class="text-xl font-bold leading-tight">SIGIS_FED - Censo por Ficha Familiar</h1>
           <p class="text-xs text-blue-200">Centro de Salud - Gestión Familiar e Integración de Datos</p>
         </div>
       </div>
@@ -35,13 +98,14 @@
   <main class="max-w-7xl mx-auto px-4 space-y-6">
     <div id="statusAlert" class="hidden p-4 rounded-lg text-sm font-medium transition-all shadow-sm"></div>
 
-    <!-- PASO 1: BÚSQUEDA Y ACTUALIZACIÓN MASIVA DE GPS -->
-    <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
-      <h2 class="text-lg font-semibold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+    <!-- PASO 1: BÚSQUEDA Y ASIGNACIÓN MASIVA DE FICHA, DIRECCIÓN Y GPS -->
+    <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200 space-y-4">
+      <h2 class="text-lg font-semibold text-blue-900 border-b pb-2 flex items-center gap-2">
         <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
-        1. Consulta de Ficha Familiar y Georreferencia Masiva
+        1. Ficha Familiar, Ubicación y Georreferencia Masiva
       </h2>
 
+      <!-- FICHA FAMILIAR Y GPS -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         <div>
           <label for="ffamiliar" class="block text-xs font-bold text-slate-700 uppercase mb-1">
@@ -77,6 +141,41 @@
               <i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar GPS a Toda la Familia
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- SECTOR, REF DIRECCIÓN Y MZ MASIVO PARA LA FAMILIA -->
+      <div class="bg-blue-50/60 p-4 rounded-xl border border-blue-100 space-y-3">
+        <span class="text-xs font-bold text-blue-900 uppercase tracking-wide flex items-center gap-1">
+          <i data-lucide="map" class="w-4 h-4 text-blue-600"></i> Asignación Masiva de Dirección para la Familia
+        </span>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+          <div>
+            <label for="sector_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Sector (Columna I)</label>
+            <input type="text" id="sector_masivo" list="listaSectores" placeholder="Seleccione Sector..." 
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white">
+          </div>
+
+          <div>
+            <label for="ref_direccion_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Ref. Dirección (Columna J)</label>
+            <input type="text" id="ref_direccion_masivo" placeholder="Ej: Av. Principal / Frente al parque" 
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white">
+          </div>
+
+          <div>
+            <label for="mz_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Mz / Manzana (Columna K) - Solo Números</label>
+            <input type="text" id="mz_masivo" placeholder="Ej: 5" 
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-1">
+          <button type="button" id="btnDireccionTodos" onclick="actualizarDireccionTodosIntegrantes()"
+            class="px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg flex items-center gap-1.5 text-xs font-bold transition shadow-sm">
+            <i data-lucide="check-check" class="w-4 h-4"></i> Asignar Sector, Ref. Direc y Mz a Todos los DNI
+          </button>
         </div>
       </div>
     </div>
@@ -193,9 +292,10 @@
             </select>
           </div>
 
+          <!-- SECTOR RESTRINGIDO A DATALIST -->
           <div>
             <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector (Columna I)</label>
-            <input type="text" id="sector" name="sector" placeholder="SECTOR 7" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
+            <input type="text" id="sector" name="sector" list="listaSectores" placeholder="Seleccione Sector..." class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white">
           </div>
 
           <div>
@@ -203,9 +303,12 @@
             <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
           </div>
 
+          <!-- MANZANA SOLO NÚMEROS -->
           <div>
-            <label for="mz" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mz / Lote (Columna K)</label>
-            <input type="text" id="mz" name="mz" placeholder="Mz A Lt 5" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
+            <label for="mz" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mz / Manzana (Columna K)</label>
+            <input type="text" id="mz" name="mz" placeholder="Solo Números" 
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none font-mono font-bold">
           </div>
         </div>
 
@@ -225,7 +328,7 @@
     lucide.createIcons();
 
     // REEMPLAZAR ESTA URL CON TU SCRIPT PUBLICADO COMO WEB APP
-    const URL_CENSO = "https://script.google.com/macros/s/AKfycbw1EPttOGBbA1l-TzsY6SP2mgGffM2v84N1Z4E2V4nSRuevQbll5kITkkujPtd11eM0rg/exec";
+    const URL_CENSO = "https://script.google.com/macros/s/AKfycbycaC1IlZYsNQtANc4sOb2MaTS01_NB-zbC0mcPMMz-r28JYMG2HlsSB1MVnLIY1xn99Q/exec";
     
     let listaIntegrantes = [];
 
@@ -252,6 +355,13 @@
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
           if (personaConGps) {
             document.getElementById('georeferencia').value = personaConGps.georeferencia;
+          }
+
+          // Rellenar la sección masiva con datos del primer integrante si existen
+          if (listaIntegrantes.length > 0) {
+            document.getElementById('sector_masivo').value = listaIntegrantes[0].sector || "";
+            document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion || "";
+            document.getElementById('mz_masivo').value = listaIntegrantes[0].mz || "";
           }
 
           renderizarTablaIntegrantes();
@@ -320,10 +430,49 @@
           document.getElementById('badgeEstado').textContent = "NUEVO REGISTRO MANUAL";
           document.getElementById('badgeEstado').className = "text-[10px] bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded font-mono font-bold";
           
+          // Asignar por defecto la dirección definida en la sección masiva si existe
+          if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value;
+          if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value;
+          if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value;
+
           mostrarAlerta(`ℹ️ <strong>DNI ${dni} no encontrado:</strong> No registra historial previo. Proceda a ingresar los datos manualmente y presione <strong>"Guardar / Actualizar"</strong>.`, "bg-blue-100 text-blue-900 border-blue-300");
         }
       } catch (error) {
         console.error("Error al consultar DNI:", error);
+      }
+    }
+
+    // Actualizar Sector, Ref. Dirección y Mz Masivamente
+    async function actualizarDireccionTodosIntegrantes() {
+      let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
+      const sector = document.getElementById('sector_masivo').value.trim();
+      const refDireccion = document.getElementById('ref_direccion_masivo').value.trim();
+      const mz = document.getElementById('mz_masivo').value.trim();
+
+      if (!ffamiliarVal) {
+        mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida.", "bg-amber-100 text-amber-800 border-amber-300");
+        return;
+      }
+
+      const ffamiliar = String(ffamiliarVal).padStart(7, '0');
+
+      const btnDireccionTodos = document.getElementById('btnDireccionTodos');
+      btnDireccionTodos.disabled = true;
+      btnDireccionTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Aplicando Ubicación...`;
+
+      try {
+        const response = await fetch(`${URL_CENSO}?action=actualizarDireccionFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&sector=${encodeURIComponent(sector)}&ref_direccion=${encodeURIComponent(refDireccion)}&mz=${encodeURIComponent(mz)}`);
+        const textResult = await response.text();
+
+        mostrarAlerta(textResult, "bg-blue-100 text-blue-900 border-blue-300");
+        await buscarFichaFamiliar();
+      } catch (error) {
+        console.error("Error al actualizar dirección masiva:", error);
+        mostrarAlerta("❌ Error al intentar actualizar la dirección masivamente.", "bg-red-100 text-red-800 border-red-300");
+      } finally {
+        btnDireccionTodos.disabled = false;
+        btnDireccionTodos.innerHTML = `<i data-lucide="check-check" class="w-4 h-4"></i> Asignar Sector, Ref. Direc y Mz a Todos los DNI`;
+        lucide.createIcons();
       }
     }
 
@@ -392,7 +541,7 @@
           <td class="p-2 border-r font-sans">${item.estado_civil || ''}</td>
           <td class="p-2 border-r font-sans">${item.sector || ''}</td>
           <td class="p-2 border-r font-sans">${item.ref_direccion || ''}</td>
-          <td class="p-2 border-r font-sans">${item.mz || ''}</td>
+          <td class="p-2 border-r font-sans font-bold text-blue-900">${item.mz || ''}</td>
           <td class="p-2 border-r text-[10px] font-bold text-indigo-700">${item.georeferencia || ''}</td>
           <td class="p-2 text-center font-sans">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
@@ -438,6 +587,11 @@
       limpiarFormularioPersona();
       document.getElementById('badgeEstado').textContent = "NUEVO INTEGRANTE";
       document.getElementById('badgeEstado').className = "text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono font-bold";
+      
+      // Si la sección masiva tiene datos, rellenarlos en el nuevo registro automáticamente
+      if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value;
+      if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value;
+      if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value;
     }
 
     // ENVÍO DE FORMULARIO
