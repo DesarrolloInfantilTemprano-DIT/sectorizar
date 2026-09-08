@@ -123,7 +123,7 @@
         </table>
       </div>
 
-      <!-- FORMULARIO -->
+      <!-- FORMULARIO DE INTEGRANTE CON CONSULTA AUTOMÁTICA DE DNI -->
       <form id="formCenso" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
         <input type="hidden" id="row" name="row" value="" />
         
@@ -135,10 +135,20 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- CAMPO DNI CON BÚSQUEDA DIRECTA -->
           <div>
-            <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">DNI (Columna A) <span class="text-red-500">*</span></label>
-            <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono">
+            <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">
+              DNI (Columna A) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative flex">
+              <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
+                oninput="this.value = this.value.replace(/[^0-9]/g, ''); evaluarConsultaDNI(this.value)"
+                class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono">
+              <button type="button" onclick="consultarDniIndividual()" title="Buscar DNI en Censo"
+                class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
+                <i data-lucide="search" class="w-4 h-4"></i>
+              </button>
+            </div>
           </div>
 
           <div class="md:col-span-3">
@@ -175,11 +185,11 @@
             <label for="estado_civil" class="block text-xs font-bold text-slate-700 uppercase mb-1">Estado Civil (Columna H)</label>
             <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
               <option value="">-- Seleccionar --</option>
-              <option value="SOLTERO(A)">SOLTERO(A)</option>
-              <option value="CASADO(A)">CASADO(A)</option>
+              <option value="SOLTERO">SOLTERO(A)</option>
+              <option value="CASADO">CASADO(A)</option>
               <option value="CONVIVIENTE">CONVIVIENTE</option>
-              <option value="DIVORCIADO(A)">DIVORCIADO(A)</option>
-              <option value="VIUDO(A)">VIUDO(A)</option>
+              <option value="DIVORCIADO">DIVORCIADO(A)</option>
+              <option value="VIUDO">VIUDO(A)</option>
             </select>
           </div>
 
@@ -254,6 +264,67 @@
       }
     }
 
+    // EVALUA LA ENTRADA DE DNI EN TIEMPO REAL (AL LLEGAR A 8 DÍGITOS)
+    function evaluarConsultaDNI(val) {
+      if (val.length === 8) {
+        // Primero busca localmente en la lista descargada de la ficha actual
+        const enMemoria = listaIntegrantes.find(p => String(p.dni).trim() === String(val).trim());
+        if (enMemoria) {
+          cargarPersonaEnFormulario(val);
+          mostrarAlerta(`ℹ️ DNI ${val} hallado en la lista actual de la Ficha Familiar.`, "bg-blue-100 text-blue-800 border-blue-300");
+        } else {
+          // Si no está en la vista local, realiza la consulta remota en el Censo completo
+          consultarDniIndividual();
+        }
+      }
+    }
+
+    // CONSULTA DIRECTA AL SERVIDOR POR DNI (USANDO TU ACCIÓN ORIGINAL "buscar")
+    async function consultarDniIndividual() {
+      const dni = document.getElementById('dni').value.trim();
+      if (!/^\d{8}$/.test(dni)) return;
+
+      mostrarAlerta(`🔍 Consultando DNI ${dni} en la base de datos del Censo...`, "bg-blue-100 text-blue-800 border-blue-300");
+
+      try {
+        const response = await fetch(`${URL_CENSO}?action=buscar&dni=${encodeURIComponent(dni)}`);
+        const data = await response.json();
+
+        if (data && data.status === "ok") {
+          // Asignar los valores recibidos del Censo al formulario
+          document.getElementById('row').value = data.row || "";
+          document.getElementById('nombreB').value = data.nombreB || "";
+          
+          if (data.fn) {
+            const partes = data.fn.split('/');
+            document.getElementById('fn').value = partes.length === 3 ? `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}` : data.fn;
+          } else {
+            document.getElementById('fn').value = "";
+          }
+
+          document.getElementById('sexo').value = data.sexo || "";
+          document.getElementById('hclinica').value = data.hclinica || "";
+          document.getElementById('telefono').value = data.telefono || "";
+          document.getElementById('estado_civil').value = data.estado_civil || "";
+          document.getElementById('sector').value = data.sector || "";
+          document.getElementById('ref_direccion').value = data.ref_direccion || "";
+          document.getElementById('mz').value = data.mz || "";
+
+          document.getElementById('badgeEstado').textContent = `DNI EXISTENTE (FILA ${data.row})`;
+          document.getElementById('badgeEstado').className = "text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-mono font-bold";
+
+          mostrarAlerta(`✅ Se encontraron datos del DNI ${dni} en el Censo (Fila ${data.row}). Puedes modificarlos y reasignarlos a esta Ficha.`, "bg-green-100 text-green-800 border-green-300");
+        } else {
+          document.getElementById('row').value = "";
+          document.getElementById('badgeEstado').textContent = "NUEVO DNI";
+          document.getElementById('badgeEstado').className = "text-[10px] bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded font-mono font-bold";
+          mostrarAlerta(`ℹ️ El DNI ${dni} no está registrado en la base de datos. Puedes registrarlo como nuevo.`, "bg-blue-100 text-blue-800 border-blue-300");
+        }
+      } catch (error) {
+        console.error("Error al consultar DNI:", error);
+      }
+    }
+
     // Actualizar GPS a todos los DNI de la misma Ficha
     async function actualizarGpsTodosIntegrantes() {
       const ffamiliar = document.getElementById('ffamiliar').value.trim();
@@ -278,8 +349,6 @@
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-indigo-100 text-indigo-900 border-indigo-300");
-        
-        // Volver a cargar la tabla para reflejar la actualización de la columna L
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al actualizar GPS masivo:", error);
