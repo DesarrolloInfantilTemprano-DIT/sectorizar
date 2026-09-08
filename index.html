@@ -88,7 +88,7 @@
         <i data-lucide="users" class="w-8 h-8"></i>
         <div>
           <h1 class="text-xl font-bold leading-tight">Ficha Familiar</h1>
-          <p class="text-xs text-blue-200">Centro de Salud</p>
+          <p class="text-xs text-blue-200">Salud Comunitaria</p>
         </div>
       </div>
       <span class="bg-blue-800 text-xs px-2.5 py-1 rounded-full text-blue-100 font-medium">FICHA FAMILIAR</span>
@@ -109,7 +109,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         <div>
           <label for="ffamiliar" class="block text-xs font-bold text-slate-700 uppercase mb-1">
-            Ficha Familiar (Columna F) <span class="text-red-500">*</span>
+            Ficha Familiar<span class="text-red-500">*</span>
           </label>
           <div class="relative flex">
             <input type="text" id="ffamiliar" name="ffamiliar" required pattern="[0-9]{1,7}" maxlength="7"
@@ -125,7 +125,7 @@
 
         <div class="md:col-span-2">
           <label for="georeferencia" class="block text-xs font-bold text-slate-700 uppercase mb-1">
-            Georreferencia GPS de la Vivienda (Columna L)
+            Georreferencia GPS de la Vivienda
           </label>
           <div class="flex flex-wrap gap-2">
             <input type="text" id="georeferencia" name="georeferencia" readonly placeholder="-9.XXXXX, -75.XXXXX"
@@ -198,17 +198,17 @@
           <thead>
             <tr class="bg-slate-100 text-slate-700 font-bold border-b uppercase">
               <th class="p-2 border-r">Fila</th>
-              <th class="p-2 border-r">DNI (A)</th>
-              <th class="p-2 border-r">Apellidos y Nombres (B)</th>
-              <th class="p-2 border-r">F. Nac (C)</th>
-              <th class="p-2 border-r">Sexo (D)</th>
-              <th class="p-2 border-r">HC (E)</th>
-              <th class="p-2 border-r">Teléfono (G)</th>
-              <th class="p-2 border-r">Est. Civil (H)</th>
-              <th class="p-2 border-r">Sector (I)</th>
-              <th class="p-2 border-r">Ref. Direc (J)</th>
-              <th class="p-2 border-r">Mz (K)</th>
-              <th class="p-2 border-r">GPS (L)</th>
+              <th class="p-2 border-r">DNI</th>
+              <th class="p-2 border-r">Apellidos y Nombres</th>
+              <th class="p-2 border-r">F. Nac</th>
+              <th class="p-2 border-r">Sexo</th>
+              <th class="p-2 border-r">HC</th>
+              <th class="p-2 border-r">Teléfono</th>
+              <th class="p-2 border-r">Est. Civil</th>
+              <th class="p-2 border-r">Sector</th>
+              <th class="p-2 border-r">Ref. Direc</th>
+              <th class="p-2 border-r">Mz</th>
+              <th class="p-2 border-r">GPS</th>
               <th class="p-2 text-center">Acción</th>
             </tr>
           </thead>
@@ -237,7 +237,7 @@
           <!-- BÚSQUEDA AUTOMÁTICA POR DNI -->
           <div>
             <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">
-              DNI (Columna A) <span class="text-red-500">*</span>
+              DNI<span class="text-red-500">*</span>
             </label>
             <div class="relative flex">
               <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
@@ -251,18 +251,18 @@
           </div>
 
           <div class="md:col-span-3">
-            <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">Apellidos y Nombres (Columna B) <span class="text-red-500">*</span></label>
+            <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">Apellidos y Nombres<span class="text-red-500">*</span></label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase">
           </div>
 
           <div>
-            <label for="fn" class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha Nac. (Columna C)</label>
+            <label for="fn" class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha Nac.</label>
             <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
           <div>
-            <label for="sexo" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sexo (Columna D)</label>
+            <label for="sexo" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sexo</label>
             <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
               <option value="">-- Seleccionar --</option>
               <option value="M">MASCULINO</option>
@@ -271,41 +271,41 @@
           </div>
 
           <div>
-            <label for="hclinica" class="block text-xs font-bold text-slate-700 uppercase mb-1">HC (Columna E)</label>
+            <label for="hclinica" class="block text-xs font-bold text-slate-700 uppercase mb-1">HC</label>
             <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
           <div>
-            <label for="telefono" class="block text-xs font-bold text-slate-700 uppercase mb-1">Teléfono (Columna G)</label>
+            <label for="telefono" class="block text-xs font-bold text-slate-700 uppercase mb-1">Celular</label>
             <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
           <div>
-            <label for="estado_civil" class="block text-xs font-bold text-slate-700 uppercase mb-1">Estado Civil (Columna H)</label>
+            <label for="estado_civil" class="block text-xs font-bold text-slate-700 uppercase mb-1">Estado Civil</label>
             <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
               <option value="">-- Seleccionar --</option>
-              <option value="SOLTERO(A)">SOLTERO(A)</option>
-              <option value="CASADO(A)">CASADO(A)</option>
+              <option value="SOLTERO">SOLTERO</option>
+              <option value="CASADO">CASADO</option>
               <option value="CONVIVIENTE">CONVIVIENTE</option>
-              <option value="DIVORCIADO(A)">DIVORCIADO(A)</option>
-              <option value="VIUDO(A)">VIUDO(A)</option>
+              <option value="DIVORCIADO">DIVORCIADO</option>
+              <option value="VIUDO">VIUDO</option>
             </select>
           </div>
 
           <!-- SECTOR RESTRINGIDO A DATALIST -->
           <div>
-            <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector (Columna I)</label>
+            <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector</label>
             <input type="text" id="sector" name="sector" list="listaSectores" placeholder="Seleccione Sector..." class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white">
           </div>
 
           <div>
-            <label for="ref_direccion" class="block text-xs font-bold text-slate-700 uppercase mb-1">Ref. Dirección (Columna J)</label>
+            <label for="ref_direccion" class="block text-xs font-bold text-slate-700 uppercase mb-1">Ref. Dirección</label>
             <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
           </div>
 
           <!-- MANZANA SOLO NÚMEROS -->
           <div>
-            <label for="mz" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mz / Manzana (Columna K)</label>
+            <label for="mz" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mz</label>
             <input type="text" id="mz" name="mz" placeholder="Solo Números" 
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none font-mono font-bold">
