@@ -23,19 +23,19 @@
 
   <!-- Encabezado -->
   <header class="bg-blue-700 text-white shadow-lg mb-6">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <i data-lucide="users" class="w-8 h-8"></i>
         <div>
           <h1 class="text-xl font-bold leading-tight">SIGIS_FED - Censo por Ficha Familiar</h1>
-          <p class="text-xs text-blue-200">Centro de Salud - Gestión Familiar y Georreferenciación</p>
+          <p class="text-xs text-blue-200">Centro de Salud - Gestión Familiar e Integración de Datos</p>
         </div>
       </div>
       <span class="bg-blue-800 text-xs px-2.5 py-1 rounded-full text-blue-100 font-medium">GitHub Edition</span>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 space-y-6">
+  <main class="max-w-7xl mx-auto px-4 space-y-6">
     <!-- Mensajes de Notificación -->
     <div id="statusAlert" class="hidden p-4 rounded-lg text-sm font-medium transition-all shadow-sm"></div>
 
@@ -57,13 +57,13 @@
             <input type="text" id="ffamiliar" name="ffamiliar" required pattern="[0-9]{7}" maxlength="7"
               placeholder="7 dígitos"
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full pl-3 pr-10 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono font-bold text-blue-800 text-lg">
+              class="w-full pl-3 pr-10 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono font-bold text-blue-800 text-lg">
             <button type="button" onclick="buscarFichaFamiliar()" title="Consultar Ficha Familiar"
               class="absolute right-1 top-1 bottom-1 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center justify-center transition">
               <i data-lucide="search" class="w-4 h-4"></i>
             </button>
           </div>
-          <span class="text-[11px] text-slate-500">Ingresa 7 números y presiona buscar</span>
+          <span class="text-[11px] text-slate-500">7 números exactos</span>
         </div>
 
         <!-- Captura de GPS Familiar (Columna L) -->
@@ -84,67 +84,77 @@
       </div>
     </div>
 
-    <!-- PASO 2: INTEGRANTES DE LA FAMILIA -->
+    <!-- PASO 2: INTEGRANTES DE LA FAMILIA CON DATOS COMPLETOS -->
     <div id="seccionIntegrantes" class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h2 class="text-lg font-semibold text-blue-900 flex items-center gap-2">
           <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-          2. Integrantes del Grupo Familiar
+          2. Integrantes del Grupo Familiar (Datos Completos)
         </h2>
         <button type="button" onclick="prepararFormularioNuevo()" 
           class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold rounded-lg text-xs flex items-center gap-1 border border-blue-200 transition">
-          <i data-lucide="user-plus" class="w-4 h-4"></i> Agregar Integrante
+          <i data-lucide="user-plus" class="w-4 h-4"></i> Nuevo Integrante
         </button>
       </div>
 
-      <!-- Tabla de miembros en la ficha -->
+      <!-- Tabla detallada de integrantes (Todas las columnas A-L) -->
       <div class="overflow-x-auto mb-6">
-        <table class="w-full text-xs text-left border-collapse">
+        <table class="w-full text-[11px] text-left border-collapse min-w-[1000px]">
           <thead>
-            <tr class="bg-slate-100 text-slate-700 font-bold border-b">
-              <th class="p-2.5">DNI</th>
-              <th class="p-2.5">Nombres y Apellidos</th>
-              <th class="p-2.5">Parentesco/Estado Civil</th>
-              <th class="p-2.5">Sector / Mz</th>
-              <th class="p-2.5 text-center">Acciones</th>
+            <tr class="bg-slate-100 text-slate-700 font-bold border-b uppercase">
+              <th class="p-2 border-r">Fila</th>
+              <th class="p-2 border-r">DNI (A)</th>
+              <th class="p-2 border-r">Apellidos y Nombres (B)</th>
+              <th class="p-2 border-r">F. Nac (C)</th>
+              <th class="p-2 border-r">Sexo (D)</th>
+              <th class="p-2 border-r">HC (E)</th>
+              <th class="p-2 border-r">Teléfono (G)</th>
+              <th class="p-2 border-r">Est. Civil (H)</th>
+              <th class="p-2 border-r">Sector (I)</th>
+              <th class="p-2 border-r">Ref. Direc (J)</th>
+              <th class="p-2 border-r">Mz (K)</th>
+              <th class="p-2 border-r">GPS (L)</th>
+              <th class="p-2 text-center">Acción</th>
             </tr>
           </thead>
           <tbody id="tablaIntegrantesBody">
             <tr>
-              <td colspan="5" class="p-4 text-center text-slate-400">
-                Consulta una Ficha Familiar para ver los miembros registrados.
+              <td colspan="13" class="p-4 text-center text-slate-400 font-sans text-xs">
+                Ingresa y consulta una Ficha Familiar para visualizar todos sus datos.
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- FORMULARIO DE DATOS DE INDIVIDUO -->
-      <form id="formCenso" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+      <!-- FORMULARIO DE REGISTRO / EDICIÓN -->
+      <form id="formCenso" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
         <input type="hidden" id="row" name="row" value="" />
         
         <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-          <span id="formTitle" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Formulario de Registro / Edición de Integrante</span>
-          <span id="badgeEstado" class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono">NUEVO INTEGRANTE</span>
+          <span id="formTitle" class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="edit-3" class="w-4 h-4 text-blue-600"></i> Formulario de Integrante
+          </span>
+          <span id="badgeEstado" class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">NUEVO REGISTRO</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- DNI -->
           <div>
             <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">
               DNI (Columna A) <span class="text-red-500">*</span>
             </label>
             <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono">
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono">
           </div>
 
-          <!-- Nombre -->
-          <div class="md:col-span-2">
+          <!-- Nombres -->
+          <div class="md:col-span-3">
             <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">
               Apellidos y Nombres (Columna B) <span class="text-red-500">*</span>
             </label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none uppercase">
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase">
           </div>
 
           <!-- Fecha Nacimiento -->
@@ -166,7 +176,7 @@
           <!-- Historia Clínica -->
           <div>
             <label for="hclinica" class="block text-xs font-bold text-slate-700 uppercase mb-1">HC (Columna E)</label>
-            <input type="text" id="hclinica" name="hclinica" placeholder="Nº de HC" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
+            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
           <!-- Teléfono -->
@@ -209,10 +219,10 @@
 
         <div class="pt-2 flex gap-3 justify-end">
           <button type="button" onclick="limpiarFormularioPersona()" class="px-4 py-2 border border-slate-300 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition">
-            Cancelar / Limpiar
+            Limpiar Campos
           </button>
-          <button type="submit" id="btnGuardar" class="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-1.5">
-            <i data-lucide="save" class="w-4 h-4"></i> Guardar Integrante
+          <button type="submit" id="btnGuardar" class="px-6 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-lg shadow-md transition flex items-center gap-1.5">
+            <i data-lucide="save" class="w-4 h-4"></i> Guardar / Actualizar
           </button>
         </div>
       </form>
@@ -224,18 +234,17 @@
 
     const URL_CENSO = "https://script.google.com/macros/s/AKfycbxbIm9-4qILGcbPcus7gOwrgMD3dq39kC8pPbg_8ER1m2K0pvncWeo5HAjwtA2_JZB7wQ/exec";
     
-    // Almacén local temporal de los integrantes de la ficha actual
     let listaIntegrantes = [];
 
-    // BÚSQUEDA PRINCIPAL: POR FICHA FAMILIAR
+    // Búsqueda por Ficha Familiar
     async function buscarFichaFamiliar() {
       const ffamiliar = document.getElementById('ffamiliar').value.trim();
       if (!/^\d{7}$/.test(ffamiliar)) {
-        mostrarAlerta("⚠️ Ingrese una Ficha Familiar válida de 7 dígitos numéricos.", "bg-amber-100 text-amber-800 border-amber-300");
+        mostrarAlerta("⚠️ Ingrese una Ficha Familiar válida de 7 dígitos.", "bg-amber-100 text-amber-800 border-amber-300");
         return;
       }
 
-      mostrarAlerta("🔍 Consultando la Ficha Familiar...", "bg-blue-100 text-blue-800 border-blue-300");
+      mostrarAlerta("🔍 Buscando grupo familiar en la base de datos...", "bg-blue-100 text-blue-800 border-blue-300");
 
       try {
         const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}`);
@@ -244,26 +253,26 @@
         if (data && data.status === "ok") {
           listaIntegrantes = data.integrantes || [];
           
-          // Si alguno ya tiene georreferencia previa, la cargamos al panel principal
+          // Cargar GPS si existe alguno guardado
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
           if (personaConGps) {
             document.getElementById('georeferencia').value = personaConGps.georeferencia;
           }
 
           renderizarTablaIntegrantes();
-          mostrarAlerta(`✅ Ficha Familiar recuperada. Se encontraron ${listaIntegrantes.length} integrante(s).`, "bg-green-100 text-green-800 border-green-300");
+          mostrarAlerta(`✅ Ficha recuperada: ${listaIntegrantes.length} integrante(s) en total.`, "bg-green-100 text-green-800 border-green-300");
         } else {
           listaIntegrantes = [];
           renderizarTablaIntegrantes();
-          mostrarAlerta("ℹ️ La Ficha Familiar no existe aún. Puedes comenzar agregando integrantes.", "bg-blue-100 text-blue-800 border-blue-300");
+          mostrarAlerta("ℹ️ No existen registros con esa Ficha. Puedes registrar nuevos integrantes.", "bg-blue-100 text-blue-800 border-blue-300");
         }
       } catch (error) {
-        console.error("Error al consultar Ficha Familiar:", error);
-        mostrarAlerta("❌ Error de comunicación con la base de datos.", "bg-red-100 text-red-800 border-red-300");
+        console.error("Error al consultar:", error);
+        mostrarAlerta("❌ Error al conectar con Google Sheets.", "bg-red-100 text-red-800 border-red-300");
       }
     }
 
-    // Renderizar listado de integrantes
+    // Renderizar listado COMPLETO de integrantes
     function renderizarTablaIntegrantes() {
       const tbody = document.getElementById('tablaIntegrantesBody');
       tbody.innerHTML = "";
@@ -271,8 +280,8 @@
       if (listaIntegrantes.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="p-4 text-center text-slate-400">
-              No se registran miembros en esta Ficha Familiar.
+            <td colspan="13" class="p-4 text-center text-slate-400 font-sans text-xs">
+              No hay miembros registrados en esta Ficha Familiar.
             </td>
           </tr>`;
         return;
@@ -280,14 +289,23 @@
 
       listaIntegrantes.forEach((item) => {
         const tr = document.createElement('tr');
-        tr.className = "border-b hover:bg-slate-50 font-mono text-xs";
+        tr.className = "border-b hover:bg-slate-100 font-mono text-[11px]";
         tr.innerHTML = `
-          <td class="p-2.5 font-bold text-slate-800">${item.dni}</td>
-          <td class="p-2.5 font-sans uppercase">${item.nombreB}</td>
-          <td class="p-2.5 font-sans">${item.estado_civil || '-'}</td>
-          <td class="p-2.5 font-sans">${item.sector || ''} ${item.mz ? '/ ' + item.mz : ''}</td>
-          <td class="p-2.5 text-center font-sans">
-            <button onclick="cargarPersonaEnFormulario('${item.dni}')" class="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded font-medium text-[11px]">
+          <td class="p-2 border-r font-bold text-slate-500 text-center">${item.row || '-'}</td>
+          <td class="p-2 border-r font-bold text-slate-900">${item.dni || ''}</td>
+          <td class="p-2 border-r font-sans font-semibold uppercase text-slate-800">${item.nombreB || ''}</td>
+          <td class="p-2 border-r font-sans">${item.fn || ''}</td>
+          <td class="p-2 border-r text-center font-bold">${item.sexo || ''}</td>
+          <td class="p-2 border-r font-sans">${item.hclinica || ''}</td>
+          <td class="p-2 border-r font-sans">${item.telefono || ''}</td>
+          <td class="p-2 border-r font-sans">${item.estado_civil || ''}</td>
+          <td class="p-2 border-r font-sans">${item.sector || ''}</td>
+          <td class="p-2 border-r font-sans">${item.ref_direccion || ''}</td>
+          <td class="p-2 border-r font-sans">${item.mz || ''}</td>
+          <td class="p-2 border-r text-[10px] text-slate-600">${item.georeferencia || ''}</td>
+          <td class="p-2 text-center font-sans">
+            <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
+              class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded font-bold text-[10px] shadow-sm transition">
               Editar
             </button>
           </td>
@@ -296,15 +314,16 @@
       });
     }
 
-    // Cargar datos de un integrante en el formulario inferior
+    // Cargar datos seleccionados de la tabla al formulario de edición
     function cargarPersonaEnFormulario(dni) {
-      const persona = listaIntegrantes.find(p => p.dni === dni);
+      const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
       if (!persona) return;
 
       document.getElementById('row').value = persona.row || "";
       document.getElementById('dni').value = persona.dni || "";
       document.getElementById('nombreB').value = persona.nombreB || "";
       
+      // Formateo de fecha
       if (persona.fn) {
         const partes = persona.fn.split('/');
         document.getElementById('fn').value = partes.length === 3 ? `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}` : persona.fn;
@@ -320,17 +339,20 @@
       document.getElementById('ref_direccion').value = persona.ref_direccion || "";
       document.getElementById('mz').value = persona.mz || "";
 
-      document.getElementById('badgeEstado').textContent = "EDITANDO REGISTRO";
+      document.getElementById('badgeEstado').textContent = `EDITANDO FILA ${persona.row}`;
       document.getElementById('badgeEstado').className = "text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-mono font-bold";
+      
+      // Desplazar vista suavemente al formulario
+      document.getElementById('formCenso').scrollIntoView({ behavior: 'smooth' });
     }
 
     function prepararFormularioNuevo() {
       limpiarFormularioPersona();
       document.getElementById('badgeEstado').textContent = "NUEVO INTEGRANTE";
-      document.getElementById('badgeEstado').className = "text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono";
+      document.getElementById('badgeEstado').className = "text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono font-bold";
     }
 
-    // Guardar / Actualizar integrante de la ficha
+    // Guardar / Editar registro en Google Sheets
     document.getElementById('formCenso').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -338,14 +360,14 @@
       const georeferencia = document.getElementById('georeferencia').value.trim();
 
       if (!/^\d{7}$/.test(ffamiliar)) {
-        mostrarAlerta("❌ Debe especificar una Ficha Familiar de 7 dígitos válida arriba.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("❌ Debe ingresar una Ficha Familiar de 7 dígitos en la sección superior.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
       const formData = {
         row: document.getElementById('row').value || null,
-        ffamiliar: ffamiliar, // Se vincula a la Ficha Familiar actual
-        georeferencia: georeferencia, // Comparte la georreferencia única de la vivienda
+        ffamiliar: ffamiliar,
+        georeferencia: georeferencia,
         dni: document.getElementById('dni').value.trim(),
         nombreB: document.getElementById('nombreB').value.trim(),
         fn: document.getElementById('fn').value,
@@ -360,7 +382,7 @@
 
       const btnGuardar = document.getElementById('btnGuardar');
       btnGuardar.disabled = true;
-      btnGuardar.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Guardando...`;
+      btnGuardar.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Procesando...`;
 
       try {
         const response = await fetch(URL_CENSO, {
@@ -373,21 +395,21 @@
         const textResult = await response.text();
         mostrarAlerta(textResult, "bg-green-100 text-green-800 border-green-300");
 
-        // Refrescar lista de la ficha familiar
+        // Refrescar automáticamente los datos y limpiar el formulario
         await buscarFichaFamiliar();
-        limpiarFormularioPersona();
+        prepararFormularioNuevo();
 
       } catch (error) {
         console.error("Error al guardar:", error);
-        mostrarAlerta("⚠️ Error al intentar guardar la información.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("⚠️ Ocurrió un error al intentar guardar los datos.", "bg-red-100 text-red-800 border-red-300");
       } finally {
         btnGuardar.disabled = false;
-        btnGuardar.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Guardar Integrante`;
+        btnGuardar.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Guardar / Actualizar`;
         lucide.createIcons();
       }
     });
 
-    // Capturar GPS único para la Vivienda / Ficha
+    // Capturar GPS
     function obtenerGeolocalizacion() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -395,15 +417,15 @@
             const lat = position.coords.latitude.toFixed(6);
             const lng = position.coords.longitude.toFixed(6);
             document.getElementById('georeferencia').value = `${lat}, ${lng}`;
-            mostrarAlerta("📍 Ubicación GPS compartida capturada correctamente.", "bg-emerald-100 text-emerald-800 border-emerald-300");
+            mostrarAlerta("📍 Ubicación GPS capturada.", "bg-emerald-100 text-emerald-800 border-emerald-300");
           },
           function(error) {
-            mostrarAlerta("⚠️ No se obtuvo acceso al GPS. Revisa los permisos.", "bg-amber-100 text-amber-800 border-amber-300");
+            mostrarAlerta("⚠️ No se pudo acceder a la geolocalización.", "bg-amber-100 text-amber-800 border-amber-300");
           },
           { enableHighAccuracy: true, timeout: 10000 }
         );
       } else {
-        mostrarAlerta("❌ El navegador no soporta geolocalización.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("❌ Geolocalización no soportada en este navegador.", "bg-red-100 text-red-800 border-red-300");
       }
     }
 
