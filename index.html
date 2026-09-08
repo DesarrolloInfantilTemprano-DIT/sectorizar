@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistema SIGIS_FED - Registro Familiar</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Iconos Lucide -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     .loader {
@@ -21,7 +19,6 @@
 </head>
 <body class="bg-slate-100 min-h-screen pb-12 font-sans text-slate-800">
 
-  <!-- Encabezado -->
   <header class="bg-blue-700 text-white shadow-lg mb-6">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -31,24 +28,21 @@
           <p class="text-xs text-blue-200">Centro de Salud - Gestión Familiar e Integración de Datos</p>
         </div>
       </div>
-      <span class="bg-blue-800 text-xs px-2.5 py-1 rounded-full text-blue-100 font-medium">GitHub Edition</span>
+      <span class="bg-blue-800 text-xs px-2.5 py-1 rounded-full text-blue-100 font-medium">MINSA / SIGIS_FED</span>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 space-y-6">
-    <!-- Mensajes de Notificación -->
     <div id="statusAlert" class="hidden p-4 rounded-lg text-sm font-medium transition-all shadow-sm"></div>
 
-    <!-- PASO 1: BÚSQUEDA POR FICHA FAMILIAR Y UBICACIÓN -->
+    <!-- PASO 1: BÚSQUEDA Y ACTUALIZACIÓN MASIVA DE GPS -->
     <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
       <h2 class="text-lg font-semibold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
         <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
-        1. Consulta de Ficha Familiar y Georreferencia
+        1. Consulta de Ficha Familiar y Georreferencia Masiva
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-        
-        <!-- Ficha Familiar (Columna F) -->
         <div>
           <label for="ffamiliar" class="block text-xs font-bold text-slate-700 uppercase mb-1">
             Ficha Familiar (Columna F) <span class="text-red-500">*</span>
@@ -63,33 +57,36 @@
               <i data-lucide="search" class="w-4 h-4"></i>
             </button>
           </div>
-          <span class="text-[11px] text-slate-500">7 números exactos</span>
         </div>
 
-        <!-- Captura de GPS Familiar (Columna L) -->
         <div class="md:col-span-2">
           <label for="georeferencia" class="block text-xs font-bold text-slate-700 uppercase mb-1">
             Georreferencia GPS de la Vivienda (Columna L)
           </label>
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <input type="text" id="georeferencia" name="georeferencia" readonly placeholder="-9.XXXXX, -75.XXXXX"
-              class="w-full px-3 py-2 border border-slate-300 bg-slate-50 rounded-lg outline-none text-slate-600 font-mono text-sm font-semibold">
+              class="flex-1 min-w-[180px] px-3 py-2 border border-slate-300 bg-slate-50 rounded-lg outline-none text-slate-600 font-mono text-sm font-semibold">
+            
             <button type="button" onclick="obtenerGeolocalizacion()"
-              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-1.5 text-xs font-medium transition whitespace-nowrap shadow-sm">
-              <i data-lucide="map-pin" class="w-4 h-4"></i> Capturar GPS Familiar
+              class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-1.5 text-xs font-medium transition shadow-sm">
+              <i data-lucide="map-pin" class="w-4 h-4"></i> Capturar GPS
+            </button>
+
+            <button type="button" id="btnGpsTodos" onclick="actualizarGpsTodosIntegrantes()"
+              class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-1.5 text-xs font-bold transition shadow-sm">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar GPS a Toda la Familia
             </button>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- PASO 2: INTEGRANTES DE LA FAMILIA CON DATOS COMPLETOS -->
+    <!-- PASO 2: LISTADO COMPLETO Y FORMULARIO -->
     <div id="seccionIntegrantes" class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h2 class="text-lg font-semibold text-blue-900 flex items-center gap-2">
           <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-          2. Integrantes del Grupo Familiar (Datos Completos)
+          2. Integrantes del Grupo Familiar
         </h2>
         <button type="button" onclick="prepararFormularioNuevo()" 
           class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold rounded-lg text-xs flex items-center gap-1 border border-blue-200 transition">
@@ -97,7 +94,6 @@
         </button>
       </div>
 
-      <!-- Tabla detallada de integrantes (Todas las columnas A-L) -->
       <div class="overflow-x-auto mb-6">
         <table class="w-full text-[11px] text-left border-collapse min-w-[1000px]">
           <thead>
@@ -127,7 +123,7 @@
         </table>
       </div>
 
-      <!-- FORMULARIO DE REGISTRO / EDICIÓN -->
+      <!-- FORMULARIO -->
       <form id="formCenso" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
         <input type="hidden" id="row" name="row" value="" />
         
@@ -139,53 +135,42 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <!-- DNI -->
           <div>
-            <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">
-              DNI (Columna A) <span class="text-red-500">*</span>
-            </label>
+            <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">DNI (Columna A) <span class="text-red-500">*</span></label>
             <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono">
           </div>
 
-          <!-- Nombres -->
           <div class="md:col-span-3">
-            <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">
-              Apellidos y Nombres (Columna B) <span class="text-red-500">*</span>
-            </label>
+            <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">Apellidos y Nombres (Columna B) <span class="text-red-500">*</span></label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase">
           </div>
 
-          <!-- Fecha Nacimiento -->
           <div>
             <label for="fn" class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha Nac. (Columna C)</label>
-            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
-          <!-- Sexo -->
           <div>
             <label for="sexo" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sexo (Columna D)</label>
-            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
               <option value="">-- Seleccionar --</option>
               <option value="M">MASCULINO</option>
               <option value="F">FEMENINO</option>
             </select>
           </div>
 
-          <!-- Historia Clínica -->
           <div>
             <label for="hclinica" class="block text-xs font-bold text-slate-700 uppercase mb-1">HC (Columna E)</label>
             <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
-          <!-- Teléfono -->
           <div>
             <label for="telefono" class="block text-xs font-bold text-slate-700 uppercase mb-1">Teléfono (Columna G)</label>
             <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
           </div>
 
-          <!-- Estado Civil -->
           <div>
             <label for="estado_civil" class="block text-xs font-bold text-slate-700 uppercase mb-1">Estado Civil (Columna H)</label>
             <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none">
@@ -198,19 +183,16 @@
             </select>
           </div>
 
-          <!-- Sector -->
           <div>
             <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector (Columna I)</label>
             <input type="text" id="sector" name="sector" placeholder="SECTOR 7" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
           </div>
 
-          <!-- Ref Dirección -->
           <div>
             <label for="ref_direccion" class="block text-xs font-bold text-slate-700 uppercase mb-1">Ref. Dirección (Columna J)</label>
             <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
           </div>
 
-          <!-- Mz/Lote -->
           <div>
             <label for="mz" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mz / Lote (Columna K)</label>
             <input type="text" id="mz" name="mz" placeholder="Mz A Lt 5" class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase">
@@ -232,7 +214,8 @@
   <script>
     lucide.createIcons();
 
-    const URL_CENSO = "https://script.google.com/macros/s/AKfycbxbIm9-4qILGcbPcus7gOwrgMD3dq39kC8pPbg_8ER1m2K0pvncWeo5HAjwtA2_JZB7wQ/exec";
+    // REEMPLAZAR ESTA URL CON TU SCRIPT PUBLICADO COMO WEB APP
+    const URL_CENSO = "https://script.google.com/macros/s/AKfycbxF-MTyVRdqaXaM9qQeRbB-YQu61QnUsrIQ5wOgW8KLnEyZ74OdqkaeLFJL5YUBtOhj_w/exec";
     
     let listaIntegrantes = [];
 
@@ -244,7 +227,7 @@
         return;
       }
 
-      mostrarAlerta("🔍 Buscando grupo familiar en la base de datos...", "bg-blue-100 text-blue-800 border-blue-300");
+      mostrarAlerta("🔍 Buscando grupo familiar...", "bg-blue-100 text-blue-800 border-blue-300");
 
       try {
         const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}`);
@@ -253,14 +236,13 @@
         if (data && data.status === "ok") {
           listaIntegrantes = data.integrantes || [];
           
-          // Cargar GPS si existe alguno guardado
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
           if (personaConGps) {
             document.getElementById('georeferencia').value = personaConGps.georeferencia;
           }
 
           renderizarTablaIntegrantes();
-          mostrarAlerta(`✅ Ficha recuperada: ${listaIntegrantes.length} integrante(s) en total.`, "bg-green-100 text-green-800 border-green-300");
+          mostrarAlerta(`✅ Ficha recuperada: ${listaIntegrantes.length} integrante(s) encontrados.`, "bg-green-100 text-green-800 border-green-300");
         } else {
           listaIntegrantes = [];
           renderizarTablaIntegrantes();
@@ -272,7 +254,43 @@
       }
     }
 
-    // Renderizar listado COMPLETO de integrantes
+    // Actualizar GPS a todos los DNI de la misma Ficha
+    async function actualizarGpsTodosIntegrantes() {
+      const ffamiliar = document.getElementById('ffamiliar').value.trim();
+      const gps = document.getElementById('georeferencia').value.trim();
+
+      if (!/^\d{7}$/.test(ffamiliar)) {
+        mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida de 7 dígitos.", "bg-amber-100 text-amber-800 border-amber-300");
+        return;
+      }
+
+      if (!gps) {
+        mostrarAlerta("⚠️ Primero capture o ingrese una ubicación GPS válida.", "bg-amber-100 text-amber-800 border-amber-300");
+        return;
+      }
+
+      const btnGpsTodos = document.getElementById('btnGpsTodos');
+      btnGpsTodos.disabled = true;
+      btnGpsTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Actualizando...`;
+
+      try {
+        const response = await fetch(`${URL_CENSO}?action=actualizarGpsFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&georeferencia=${encodeURIComponent(gps)}`);
+        const textResult = await response.text();
+
+        mostrarAlerta(textResult, "bg-indigo-100 text-indigo-900 border-indigo-300");
+        
+        // Volver a cargar la tabla para reflejar la actualización de la columna L
+        await buscarFichaFamiliar();
+      } catch (error) {
+        console.error("Error al actualizar GPS masivo:", error);
+        mostrarAlerta("❌ Error al intentar actualizar el GPS masivamente.", "bg-red-100 text-red-800 border-red-300");
+      } finally {
+        btnGpsTodos.disabled = false;
+        btnGpsTodos.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar GPS a Toda la Familia`;
+        lucide.createIcons();
+      }
+    }
+
     function renderizarTablaIntegrantes() {
       const tbody = document.getElementById('tablaIntegrantesBody');
       tbody.innerHTML = "";
@@ -302,7 +320,7 @@
           <td class="p-2 border-r font-sans">${item.sector || ''}</td>
           <td class="p-2 border-r font-sans">${item.ref_direccion || ''}</td>
           <td class="p-2 border-r font-sans">${item.mz || ''}</td>
-          <td class="p-2 border-r text-[10px] text-slate-600">${item.georeferencia || ''}</td>
+          <td class="p-2 border-r text-[10px] font-bold text-indigo-700">${item.georeferencia || ''}</td>
           <td class="p-2 text-center font-sans">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
               class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded font-bold text-[10px] shadow-sm transition">
@@ -314,7 +332,6 @@
       });
     }
 
-    // Cargar datos seleccionados de la tabla al formulario de edición
     function cargarPersonaEnFormulario(dni) {
       const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
       if (!persona) return;
@@ -323,7 +340,6 @@
       document.getElementById('dni').value = persona.dni || "";
       document.getElementById('nombreB').value = persona.nombreB || "";
       
-      // Formateo de fecha
       if (persona.fn) {
         const partes = persona.fn.split('/');
         document.getElementById('fn').value = partes.length === 3 ? `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}` : persona.fn;
@@ -342,7 +358,6 @@
       document.getElementById('badgeEstado').textContent = `EDITANDO FILA ${persona.row}`;
       document.getElementById('badgeEstado').className = "text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-mono font-bold";
       
-      // Desplazar vista suavemente al formulario
       document.getElementById('formCenso').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -352,7 +367,6 @@
       document.getElementById('badgeEstado').className = "text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono font-bold";
     }
 
-    // Guardar / Editar registro en Google Sheets
     document.getElementById('formCenso').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -395,7 +409,6 @@
         const textResult = await response.text();
         mostrarAlerta(textResult, "bg-green-100 text-green-800 border-green-300");
 
-        // Refrescar automáticamente los datos y limpiar el formulario
         await buscarFichaFamiliar();
         prepararFormularioNuevo();
 
@@ -409,7 +422,6 @@
       }
     });
 
-    // Capturar GPS
     function obtenerGeolocalizacion() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
