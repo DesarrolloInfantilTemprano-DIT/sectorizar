@@ -80,7 +80,6 @@
     <option value="933-COMUNIDAD VENADO PAMPA"></option>
     <option value="933-COMUNIDAD YURIMAGUAS"></option>
     <option value="933-SIN SECTOR"></option>
-    <option value="933-OTRO DISTRITO"></option>
   </datalist>
 
   <header class="bg-blue-700 text-white shadow-lg mb-6">
@@ -153,9 +152,15 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
           <div>
-            <label for="sector_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Sector</label>
-            <input type="text" id="sector_masivo" list="listaSectores" placeholder="Seleccione Sector..." 
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white">
+            <label for="sector_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Sector<span class="text-red-500">*</span></label>
+            <div class="relative flex">
+              <input type="text" id="sector_masivo" list="listaSectores" placeholder="Seleccione Sector..." 
+                class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white">
+              <button type="button" onclick="abrirModalSectores('sector_masivo')" title="Buscar en lista de sectores"
+                class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
+                <i data-lucide="search" class="w-4 h-4"></i>
+              </button>
+            </div>
           </div>
 
           <div>
@@ -293,10 +298,16 @@
             </select>
           </div>
 
-          <!-- SECTOR RESTRINGIDO A DATALIST -->
+          <!-- SECTOR RESTRINGIDO A DATALIST CON BÚSQUEDA -->
           <div>
             <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector</label>
-            <input type="text" id="sector" name="sector" list="listaSectores" placeholder="Seleccione Sector..." class="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white">
+            <div class="relative flex">
+              <input type="text" id="sector" name="sector" list="listaSectores" placeholder="Seleccione Sector..." class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white">
+              <button type="button" onclick="abrirModalSectores('sector')" title="Buscar en lista de sectores"
+                class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
+                <i data-lucide="search" class="w-4 h-4"></i>
+              </button>
+            </div>
           </div>
 
           <div>
@@ -325,11 +336,96 @@
     </div>
   </main>
 
+  <!-- MODAL BÚSQUEDA DE SECTORES -->
+  <div id="modalSectores" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col max-h-[80vh]">
+      <div class="p-4 bg-blue-700 text-white flex justify-between items-center">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i data-lucide="map-pin" class="w-4 h-4"></i> Buscar Sector Registrado
+        </h3>
+        <button onclick="cerrarModalSectores()" class="text-blue-200 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      
+      <div class="p-4 border-b bg-slate-50">
+        <input type="text" id="filtroSectores" oninput="filtrarListaSectores(this.value)" placeholder="Escriba para filtrar (ej. 25 de Enero, Jacintillo)..."
+          class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase">
+      </div>
+
+      <div class="p-2 overflow-y-auto flex-1 space-y-1" id="contenedorModalSectores">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <div class="p-3 border-t bg-slate-100 flex justify-end">
+        <button onclick="cerrarModalSectores()" class="px-4 py-1.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-lg">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     lucide.createIcons();
 
     const URL_CENSO = "https://script.google.com/macros/s/AKfycbz-PaNW15W43wBS8AmlEHfFe4QrUnITK-8yEnvwoGUnpw7PdbpNvJhPCc4q5qDs8c3WWg/exec";
     let listaIntegrantes = [];
+
+    // Array de sectores extraídos directamente del datalist
+    const SECTORES_VALIDOS = Array.from(document.querySelectorAll('#listaSectores option')).map(opt => opt.value);
+    let idInputSectorDestino = '';
+
+    // Función para validar si un sector ingresado está en la lista permitida
+    function esSectorValido(sectorTexto) {
+      if (!sectorTexto) return true; // Si está vacío es válido
+      return SECTORES_VALIDOS.includes(sectorTexto.trim().toUpperCase());
+    }
+
+    // Funciones del Modal de Sectores
+    function abrirModalSectores(inputId) {
+      idInputSectorDestino = inputId;
+      document.getElementById('filtroSectores').value = "";
+      renderizarListaModalSectores(SECTORES_VALIDOS);
+      document.getElementById('modalSectores').classList.remove('hidden');
+      document.getElementById('filtroSectores').focus();
+    }
+
+    function cerrarModalSectores() {
+      document.getElementById('modalSectores').classList.add('hidden');
+    }
+
+    function renderizarListaModalSectores(lista) {
+      const cont = document.getElementById('contenedorModalSectores');
+      cont.innerHTML = "";
+
+      if (lista.length === 0) {
+        cont.innerHTML = `<div class="p-3 text-center text-xs text-slate-400">No se encontraron sectores coincidentes.</div>`;
+        return;
+      }
+
+      lista.forEach(sec => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = "w-full text-left px-3 py-2 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-md border border-transparent hover:border-blue-200 transition flex items-center justify-between";
+        item.innerHTML = `<span>${sec}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
+        item.onclick = () => seleccionarSectorModal(sec);
+        cont.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    function filtrarListaSectores(texto) {
+      const q = texto.toUpperCase();
+      const filtrados = SECTORES_VALIDOS.filter(s => s.toUpperCase().includes(q));
+      renderizarListaModalSectores(filtrados);
+    }
+
+    function seleccionarSectorModal(sectorSeleccionado) {
+      if (idInputSectorDestino) {
+        document.getElementById(idInputSectorDestino).value = sectorSeleccionado;
+      }
+      cerrarModalSectores();
+    }
 
     // Búsqueda por Ficha Familiar
     async function buscarFichaFamiliar() {
@@ -464,6 +560,12 @@
 
       if (!ffamiliarVal) {
         mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida.", "bg-amber-100 text-amber-800 border-amber-300");
+        return;
+      }
+
+      // Validación estricta de Sector
+      if (!esSectorValido(sector)) {
+        mostrarAlerta("❌ El sector ingresado no existe en la lista oficial. Seleccione uno válido usando el buscador.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
@@ -612,9 +714,16 @@
 
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
       const georeferencia = document.getElementById('georeferencia').value.trim();
+      const sectorVal = document.getElementById('sector').value.trim();
 
       if (!ffamiliarVal) {
         mostrarAlerta("❌ Debe ingresar una Ficha Familiar en la sección superior.", "bg-red-100 text-red-800 border-red-300");
+        return;
+      }
+
+      // Validación estricta de Sector
+      if (!esSectorValido(sectorVal)) {
+        mostrarAlerta("❌ El sector ingresado no está en la lista oficial. Por favor use el botón de búsqueda para elegir uno válido.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
@@ -631,7 +740,7 @@
         hclinica: document.getElementById('hclinica').value.trim(),
         telefono: document.getElementById('telefono').value.trim(),
         estado_civil: document.getElementById('estado_civil').value,
-        sector: document.getElementById('sector').value.trim(),
+        sector: sectorVal,
         ref_direccion: document.getElementById('ref_direccion').value.trim(),
         mz: document.getElementById('mz').value.trim()
       };
