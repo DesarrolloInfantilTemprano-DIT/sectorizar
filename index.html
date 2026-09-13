@@ -19,70 +19,6 @@
 </head>
 <body class="bg-slate-100 min-h-screen pb-12 font-sans text-slate-800">
 
-  <!-- DATALIST GLOBAL DE SECTORES RESTRINGIDOS -->
-  <datalist id="listaSectores">
-    <option value="933-AA.VV. 25 DE ENERO"></option>
-    <option value="933-AA.VV. CARMEN GARAY"></option>
-    <option value="933-AA.VV. FUNDO NUEVA ESPERANZA"></option>
-    <option value="933-AA.VV. LOS LAURELES"></option>
-    <option value="933-AA.VV. PUEBLO LIBRE"></option>
-    <option value="933-AA.VV.01 DE MAYO"></option>
-    <option value="933-AA.VV.01 DE SETIEMBRE"></option>
-    <option value="933-AA.VV.07 DE MAYO"></option>
-    <option value="933-AA.VV.09 DE AGOSTO"></option>
-    <option value="933-AA.VV.15 DE AGOSTO"></option>
-    <option value="933-AA.VV.CESAR VALLEJO"></option>
-    <option value="933-AA.VV.CIUDAD COLINA"></option>
-    <option value="933-AA.VV.COLONIA TINGALESA"></option>
-    <option value="933-AA.VV.EDUARDO VILLASANTE"></option>
-    <option value="933-AA.VV.JOSE CARLOS MARIATEGUI"></option>
-    <option value="933-AA.VV.JOSE OLAYA BALANDRA"></option>
-    <option value="933-AA.VV.JUAN PICON QUEDO"></option>
-    <option value="933-AA.VV.JULIO MARTINEZ"></option>
-    <option value="933-AA.VV.LAS ALMENDRAS"></option>
-    <option value="933-AA.VV.LAS AMAZONAS"></option>
-    <option value="933-AA.VV.LAS PALMERAS"></option>
-    <option value="933-AA.VV.LOS ANGELES"></option>
-    <option value="933-AA.VV.LOS JARDINES"></option>
-    <option value="933-AA.VV.LOS PINOS"></option>
-    <option value="933-AA.VV.MARIA PARADO DE BELLIDO"></option>
-    <option value="933-AA.VV.MONTERRICO"></option>
-    <option value="933-AA.VV.NUEVA ESPERANZA"></option>
-    <option value="933-AA.VV.NUEVA JERUSALEN"></option>
-    <option value="933-AA.VV.NUEV AMANECER"></option>
-    <option value="933-AA.VV.PADRES DE FAMILIA"></option>
-    <option value="933-AA.VV.PANTOJA"></option>
-    <option value="933-AA.VV.PEDREGAL"></option>
-    <option value="933-AA.VV.POBLADORES DE CASTILLO GRANDE"></option>
-    <option value="933-AA.VV.SAN CARLOS"></option>
-    <option value="933-AA.VV.SAN ISIDRO"></option>
-    <option value="933-AA.VV.SAN MIGUEL"></option>
-    <option value="933-AA.VV.SANTA ROSA"></option>
-    <option value="933-SOL NACIENTE"></option>
-    <option value="933-COMUNIDAD ASERRADERO"></option>
-    <option value="933-COMUNIDAD CAPITAN SOTO"></option>
-    <option value="933-COMUNIDAD HUANGANAPAMPA"></option>
-    <option value="933-COMUNIDAD HUAYNACAPAC"></option>
-    <option value="933-COMUNIDAD JACINTILLO"></option>
-    <option value="933-COMUNIDAD LA CURVA"></option>
-    <option value="933-COMUNIDAD LA FLORIDA"></option>
-    <option value="933-COMUNIDAD MANCO CAPAC"></option>
-    <option value="933-COMUNIDAD MANTARO"></option>
-    <option value="933-COMUNIDAD MERCED DE LOCRO"></option>
-    <option value="933-COMUNIDAD MOYANO"></option>
-    <option value="933-COMUNIDAD NUEVA ALTURA"></option>
-    <option value="933-COMUNIDAD PACHACUTEC"></option>
-    <option value="933-COMUNIDAD PAPAYAL"></option>
-    <option value="933-COMUNIDAD PICUROYACU"></option>
-    <option value="933-COMUNIDAD SANTA ROSA DE CASTILLA"></option>
-    <option value="933-COMUNIDAD SHAMIRO"></option>
-    <option value="933-COMUNIDAD SINCHI ROCCA"></option>
-    <option value="933-COMUNIDAD VENADO PAMPA"></option>
-    <option value="933-COMUNIDAD YURIMAGUAS"></option>
-    <option value="933-SIN SECTOR"></option>
-    <option value="933-OTRO DISTRITO"></option>
-  </datalist>
-
   <header class="bg-blue-700 text-white shadow-lg mb-6">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -155,10 +91,10 @@
           <div>
             <label for="sector_masivo" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Sector<span class="text-red-500">*</span></label>
             <div class="relative flex">
-              <input type="text" id="sector_masivo" list="listaSectores" placeholder="Seleccione Sector..." 
-                class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white">
-              <button type="button" onclick="abrirModalSectores('sector_masivo')" title="Buscar en lista de sectores"
-                class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
+              <input type="text" id="sector_masivo" readonly onclick="abrirModalSectores('sector_masivo')" placeholder="SELECCIONE SECTOR..." 
+                class="w-full pl-3 pr-9 py-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white cursor-pointer select-none">
+              <button type="button" onclick="abrirModalSectores('sector_masivo')" title="Buscar sector"
+                class="absolute right-1 top-1 bottom-1 px-2 text-slate-500 hover:text-blue-600 transition flex items-center justify-center">
                 <i data-lucide="search" class="w-4 h-4"></i>
               </button>
             </div>
@@ -299,13 +235,14 @@
             </select>
           </div>
 
-          <!-- SECTOR RESTRINGIDO A DATALIST CON BÚSQUEDA -->
+          <!-- SECTOR SELECCIONABLE ÚNICAMENTE VÍA MODAL -->
           <div>
             <label for="sector" class="block text-xs font-bold text-slate-700 uppercase mb-1">Sector</label>
             <div class="relative flex">
-              <input type="text" id="sector" name="sector" list="listaSectores" placeholder="Seleccione Sector..." class="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white">
-              <button type="button" onclick="abrirModalSectores('sector')" title="Buscar en lista de sectores"
-                class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
+              <input type="text" id="sector" name="sector" readonly onclick="abrirModalSectores('sector')" placeholder="SELECCIONE SECTOR..." 
+                class="w-full pl-3 pr-9 py-2 border border-slate-300 rounded-lg outline-none uppercase bg-white cursor-pointer select-none">
+              <button type="button" onclick="abrirModalSectores('sector')" title="Buscar sector"
+                class="absolute right-1 top-1 bottom-1 px-2 text-slate-500 hover:text-blue-600 transition flex items-center justify-center">
                 <i data-lucide="search" class="w-4 h-4"></i>
               </button>
             </div>
@@ -344,7 +281,7 @@
         <h3 class="font-bold text-sm flex items-center gap-2">
           <i data-lucide="map-pin" class="w-4 h-4"></i> Buscar Sector Registrado
         </h3>
-        <button onclick="cerrarModalSectores()" class="text-blue-200 hover:text-white">
+        <button type="button" onclick="cerrarModalSectores()" class="text-blue-200 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -359,7 +296,7 @@
       </div>
 
       <div class="p-3 border-t bg-slate-100 flex justify-end">
-        <button onclick="cerrarModalSectores()" class="px-4 py-1.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-lg">
+        <button type="button" onclick="cerrarModalSectores()" class="px-4 py-1.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-lg">
           Cerrar
         </button>
       </div>
@@ -372,13 +309,74 @@
     const URL_CENSO = "https://script.google.com/macros/s/AKfycbz-PaNW15W43wBS8AmlEHfFe4QrUnITK-8yEnvwoGUnpw7PdbpNvJhPCc4q5qDs8c3WWg/exec";
     let listaIntegrantes = [];
 
-    // Array de sectores extraídos directamente del datalist
-    const SECTORES_VALIDOS = Array.from(document.querySelectorAll('#listaSectores option')).map(opt => opt.value);
+    // Arreglo maestro de sectores permitidos
+    const SECTORES_VALIDOS = [
+      "933-AA.VV. 25 DE ENERO",
+      "933-AA.VV. CARMEN GARAY",
+      "933-AA.VV. FUNDO NUEVA ESPERANZA",
+      "933-AA.VV. LOS LAURELES",
+      "933-AA.VV. PUEBLO LIBRE",
+      "933-AA.VV.01 DE MAYO",
+      "933-AA.VV.01 DE SETIEMBRE",
+      "933-AA.VV.07 DE MAYO",
+      "933-AA.VV.09 DE AGOSTO",
+      "933-AA.VV.15 DE AGOSTO",
+      "933-AA.VV.CESAR VALLEJO",
+      "933-AA.VV.CIUDAD COLINA",
+      "933-AA.VV.COLONIA TINGALESA",
+      "933-AA.VV.EDUARDO VILLASANTE",
+      "933-AA.VV.JOSE CARLOS MARIATEGUI",
+      "933-AA.VV.JOSE OLAYA BALANDRA",
+      "933-AA.VV.JUAN PICON QUEDO",
+      "933-AA.VV.JULIO MARTINEZ",
+      "933-AA.VV.LAS ALMENDRAS",
+      "933-AA.VV.LAS AMAZONAS",
+      "933-AA.VV.LAS PALMERAS",
+      "933-AA.VV.LOS ANGELES",
+      "933-AA.VV.LOS JARDINES",
+      "933-AA.VV.LOS PINOS",
+      "933-AA.VV.MARIA PARADO DE BELLIDO",
+      "933-AA.VV.MONTERRICO",
+      "933-AA.VV.NUEVA ESPERANZA",
+      "933-AA.VV.NUEVA JERUSALEN",
+      "933-AA.VV.NUEV AMANECER",
+      "933-AA.VV.PADRES DE FAMILIA",
+      "933-AA.VV.PANTOJA",
+      "933-AA.VV.PEDREGAL",
+      "933-AA.VV.POBLADORES DE CASTILLO GRANDE",
+      "933-AA.VV.SAN CARLOS",
+      "933-AA.VV.SAN ISIDRO",
+      "933-AA.VV.SAN MIGUEL",
+      "933-AA.VV.SANTA ROSA",
+      "933-SOL NACIENTE",
+      "933-COMUNIDAD ASERRADERO",
+      "933-COMUNIDAD CAPITAN SOTO",
+      "933-COMUNIDAD HUANGANAPAMPA",
+      "933-COMUNIDAD HUAYNACAPAC",
+      "933-COMUNIDAD JACINTILLO",
+      "933-COMUNIDAD LA CURVA",
+      "933-COMUNIDAD LA FLORIDA",
+      "933-COMUNIDAD MANCO CAPAC",
+      "933-COMUNIDAD MANTARO",
+      "933-COMUNIDAD MERCED DE LOCRO",
+      "933-COMUNIDAD MOYANO",
+      "933-COMUNIDAD NUEVA ALTURA",
+      "933-COMUNIDAD PACHACUTEC",
+      "933-COMUNIDAD PAPAYAL",
+      "933-COMUNIDAD PICUROYACU",
+      "933-COMUNIDAD SANTA ROSA DE CASTILLA",
+      "933-COMUNIDAD SHAMIRO",
+      "933-COMUNIDAD SINCHI ROCCA",
+      "933-COMUNIDAD VENADO PAMPA",
+      "933-COMUNIDAD YURIMAGUAS",
+      "933-SIN SECTOR"
+      "933-OTRO DISTRITO"
+    ];
+
     let idInputSectorDestino = '';
 
-    // Función para validar si un sector ingresado está en la lista permitida
     function esSectorValido(sectorTexto) {
-      if (!sectorTexto) return true; // Si está vacío es válido
+      if (!sectorTexto) return true;
       return SECTORES_VALIDOS.includes(sectorTexto.trim().toUpperCase());
     }
 
@@ -448,11 +446,9 @@
         if (data && data.status === "ok" && data.integrantes && data.integrantes.length > 0) {
           listaIntegrantes = data.integrantes;
           
-          // Asignar el GPS si existe en algún integrante
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
           document.getElementById('georeferencia').value = personaConGps ? personaConGps.georeferencia : "";
 
-          // Rellenar datos de dirección del primer integrante
           document.getElementById('sector_masivo').value = listaIntegrantes[0].sector || "";
           document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion || "";
           document.getElementById('mz_masivo').value = listaIntegrantes[0].mz || "";
@@ -462,7 +458,6 @@
           
           mostrarAlerta(`✅ Ficha ${ffamiliar} recuperada: ${listaIntegrantes.length} integrante(s) encontrados. Puede actualizar el GPS capturando la posición actual si es necesario.`, "bg-green-100 text-green-800 border-green-300");
         } else {
-          // FICHA NUEVA / INEXISTENTE: Limpieza total para nuevo registro
           listaIntegrantes = [];
           document.getElementById('georeferencia').value = "";
           document.getElementById('sector_masivo').value = "";
@@ -480,7 +475,6 @@
       }
     }
 
-    // EVALÚA LA ENTRADA DE DNI EN TIEMPO REAL
     function evaluarConsultaDNI(val) {
       if (val.length === 8) {
         const enMemoria = listaIntegrantes.find(p => String(p.dni).trim() === String(val).trim());
@@ -493,7 +487,6 @@
       }
     }
 
-    // CONSULTA DIRECTA POR DNI
     async function consultarDniIndividual() {
       const dni = document.getElementById('dni').value.trim();
       if (!/^\d{8}$/.test(dni)) return;
@@ -528,7 +521,6 @@
 
           mostrarAlerta(`✅ Se encontraron datos del DNI ${dni} en el Censo (Fila ${data.row}). Puedes modificarlos y guardarlos.`, "bg-green-100 text-green-800 border-green-300");
         } else {
-          // DNI INEXISTENTE: Limpia los datos personales manteniendo la dirección masiva por defecto
           document.getElementById('row').value = "";
           document.getElementById('nombreB').value = "";
           document.getElementById('fn').value = "";
@@ -537,7 +529,6 @@
           document.getElementById('telefono').value = "";
           document.getElementById('estado_civil').value = "";
 
-          // Asignar por defecto la dirección de la sección masiva si existe
           document.getElementById('sector').value = document.getElementById('sector_masivo').value || "";
           document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value || "";
           document.getElementById('mz').value = document.getElementById('mz_masivo').value || "";
@@ -552,7 +543,6 @@
       }
     }
 
-    // Actualizar Sector, Ref. Dirección y Mz Masivamente
     async function actualizarDireccionTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
       const sector = document.getElementById('sector_masivo').value.trim();
@@ -564,9 +554,8 @@
         return;
       }
 
-      // Validación estricta de Sector
       if (!esSectorValido(sector)) {
-        mostrarAlerta("❌ El sector ingresado no existe en la lista oficial. Seleccione uno válido usando el buscador.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("❌ El sector ingresado no existe en la lista oficial. Seleccione uno válido usando la lupa.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
@@ -592,7 +581,6 @@
       }
     }
 
-    // Actualizar GPS masivo
     async function actualizarGpsTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
       const gps = document.getElementById('georeferencia').value.trim();
@@ -722,9 +710,8 @@
         return;
       }
 
-      // Validación estricta de Sector
       if (!esSectorValido(sectorVal)) {
-        mostrarAlerta("❌ El sector ingresado no está en la lista oficial. Por favor use el botón de búsqueda para elegir uno válido.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("❌ El sector ingresado no está en la lista oficial. Por favor use la lupa para seleccionar uno.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
