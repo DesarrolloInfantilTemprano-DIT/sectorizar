@@ -51,7 +51,7 @@
           <div class="relative flex">
             <input type="text" id="ffamiliar" name="ffamiliar" required pattern="[0-9]{1,7}" maxlength="7"
               placeholder="Hasta 7 dígitos"
-              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              oninput="this.value = this.value.replace(/[^0-9]/g, ''); sincronizarFichaIndividual(this.value)"
               class="w-full pl-3 pr-10 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono font-bold text-blue-800 text-lg">
             <button type="button" onclick="buscarFichaFamiliar()" title="Consultar Ficha Familiar"
               class="absolute right-1 top-1 bottom-1 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center justify-center transition">
@@ -166,7 +166,7 @@
         </table>
       </div>
 
-      <!-- FORMULARIO DE INTEGRANTE -->
+      <!-- FORMULARIO DE INTEGRANTE CON CAMPO FICHA FAMILIAR -->
       <form id="formCenso" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
         <input type="hidden" id="row" name="row" value="" />
         
@@ -178,6 +178,15 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- FICHA FAMILIAR EN EL FORMULARIO (NUEVO CAMPO VISIBLE) -->
+          <div>
+            <label for="ffamiliar_indiv" class="block text-xs font-bold text-blue-900 uppercase mb-1">
+              Nº Ficha Familiar
+            </label>
+            <input type="text" id="ffamiliar_indiv" readonly placeholder="SIN ASIGNAR"
+              class="w-full px-3 py-2 border border-blue-200 bg-blue-50/70 text-blue-800 rounded-lg font-mono font-bold text-sm outline-none">
+          </div>
+
           <!-- BÚSQUEDA AUTOMÁTICA POR DNI -->
           <div>
             <label for="dni" class="block text-xs font-bold text-slate-700 uppercase mb-1">
@@ -194,7 +203,7 @@
             </div>
           </div>
 
-          <div class="md:col-span-3">
+          <div class="md:col-span-2">
             <label for="nombreB" class="block text-xs font-bold text-slate-700 uppercase mb-1">Apellidos y Nombres<span class="text-red-500">*</span></label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase">
@@ -372,9 +381,15 @@
       "933-COMUNIDAD VENADO PAMPA",
       "933-COMUNIDAD YURIMAGUAS",
       "933-SIN SECTOR"
+      "933-OTRO DISTRITO"
     ];
 
     let idInputSectorDestino = '';
+
+    // Sincronización continua de la Ficha Familiar individual con el campo superior
+    function sincronizarFichaIndividual(valor) {
+      document.getElementById('ffamiliar_indiv').value = valor ? String(valor).padStart(7, '0') : '';
+    }
 
     // Validar coincidencia estricta con la lista
     function esSectorValido(sectorTexto) {
@@ -438,6 +453,7 @@
 
       const ffamiliar = String(ffamiliarVal).padStart(7, '0');
       document.getElementById('ffamiliar').value = ffamiliar;
+      document.getElementById('ffamiliar_indiv').value = ffamiliar;
 
       mostrarAlerta("🔍 Buscando grupo familiar...", "bg-blue-100 text-blue-800 border-blue-300");
 
@@ -459,6 +475,7 @@
 
           renderizarTablaIntegrantes();
           limpiarFormularioPersona();
+          document.getElementById('ffamiliar_indiv').value = ffamiliar;
           
           mostrarAlerta(`✅ Ficha ${ffamiliar} recuperada: ${listaIntegrantes.length} integrante(s) encontrados. Puede actualizar el GPS capturando la posición actual si es necesario.`, "bg-green-100 text-green-800 border-green-300");
         } else {
@@ -471,6 +488,7 @@
 
           renderizarTablaIntegrantes();
           limpiarFormularioPersona();
+          document.getElementById('ffamiliar_indiv').value = ffamiliar;
           
           mostrarAlerta(`ℹ️ La Ficha ${ffamiliar} no existe en la base de datos. Se han limpiado los campos para ingresar un nuevo grupo familiar.`, "bg-blue-100 text-blue-800 border-blue-300");
         }
@@ -508,6 +526,13 @@
           document.getElementById('row').value = data.row || "";
           document.getElementById('nombreB').value = data.nombreB || "";
           
+          // Muestra y sincroniza el número de Ficha registrado para este DNI
+          if (data.ffamiliar) {
+            const numFicha = String(data.ffamiliar).padStart(7, '0');
+            document.getElementById('ffamiliar_indiv').value = numFicha;
+            document.getElementById('ffamiliar').value = numFicha;
+          }
+
           if (data.fn) {
             const partes = data.fn.split('/');
             document.getElementById('fn').value = partes.length === 3 ? `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}` : data.fn;
@@ -526,7 +551,7 @@
           document.getElementById('badgeEstado').textContent = `DNI EXISTENTE (FILA ${data.row})`;
           document.getElementById('badgeEstado').className = "text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-mono font-bold";
 
-          mostrarAlerta(`✅ Se encontraron datos del DNI ${dni} en el Censo (Fila ${data.row}). Puedes modificarlos y guardarlos.`, "bg-green-100 text-green-800 border-green-300");
+          mostrarAlerta(`✅ Se encontraron datos del DNI ${dni} pertenenciente a la Ficha ${document.getElementById('ffamiliar_indiv').value} (Fila ${data.row}). Puedes modificarlos y guardarlos.`, "bg-green-100 text-green-800 border-green-300");
         } else {
           // DNI INEXISTENTE: Limpia los datos personales manteniendo la dirección masiva por defecto
           document.getElementById('row').value = "";
@@ -678,6 +703,9 @@
       document.getElementById('dni').value = persona.dni || "";
       document.getElementById('nombreB').value = persona.nombreB || "";
       
+      const numFicha = document.getElementById('ffamiliar').value;
+      document.getElementById('ffamiliar_indiv').value = numFicha || "";
+      
       if (persona.fn) {
         const partes = persona.fn.split('/');
         document.getElementById('fn').value = partes.length === 3 ? `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}` : persona.fn;
@@ -704,6 +732,9 @@
       document.getElementById('badgeEstado').textContent = "NUEVO INTEGRANTE";
       document.getElementById('badgeEstado').className = "text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-mono font-bold";
       
+      const numFicha = document.getElementById('ffamiliar').value;
+      document.getElementById('ffamiliar_indiv').value = numFicha || "";
+
       if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value;
       if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value;
       if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value;
@@ -713,12 +744,12 @@
     document.getElementById('formCenso').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
+      let ffamiliarVal = document.getElementById('ffamiliar').value.trim() || document.getElementById('ffamiliar_indiv').value.trim();
       const georeferencia = document.getElementById('georeferencia').value.trim();
       const sectorVal = document.getElementById('sector').value.trim();
 
       if (!ffamiliarVal) {
-        mostrarAlerta("❌ Debe ingresar una Ficha Familiar en la sección superior.", "bg-red-100 text-red-800 border-red-300");
+        mostrarAlerta("❌ Debe ingresar una Ficha Familiar válida.", "bg-red-100 text-red-800 border-red-300");
         return;
       }
 
@@ -761,6 +792,7 @@
         const textResult = await response.text();
         mostrarAlerta(textResult, "bg-green-100 text-green-800 border-green-300");
 
+        document.getElementById('ffamiliar').value = ffamiliarTexto;
         await buscarFichaFamiliar();
         prepararFormularioNuevo();
 
@@ -796,6 +828,8 @@
     function limpiarFormularioPersona() {
       document.getElementById('formCenso').reset();
       document.getElementById('row').value = "";
+      const currentFicha = document.getElementById('ffamiliar').value;
+      if (currentFicha) document.getElementById('ffamiliar_indiv').value = currentFicha;
     }
 
     function mostrarAlerta(mensaje, clasesCss) {
