@@ -27,7 +27,7 @@
         font-size: 9pt !important;
         padding-bottom: 0 !important;
       }
-      header, .no-print, #statusAlert, #modalConfirmDesvincular, #modalNotificacion {
+      header, .no-print, #statusAlert, #modalConfirmDesvincular {
         display: none !important;
       }
       main {
@@ -138,7 +138,7 @@
             <input type="text" id="ffamiliar" name="ffamiliar" required pattern="[0-9]{1,7}" maxlength="7"
               placeholder="Ej: 0001234"
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full pl-3 pr-12 py-2.5 bg-slate-50 border border-slate-200 text-slate-800 text-base font-mono font-bold focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition">
+              class="w-full pl-3 pr-12 py-2.5 bg-slate-50 border border-slate-200 text-slate-800 text-base font-mono font-bold focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition uppercase">
             <button type="button" onclick="buscarFichaFamiliar()" title="Consultar Ficha Familiar"
               class="absolute right-1 top-1 bottom-1 px-3 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white rounded-lg flex items-center justify-center transition shadow-sm no-print">
               <i data-lucide="search" class="w-4 h-4"></i>
@@ -181,6 +181,7 @@
             <div class="relative flex items-center">
               <input type="text" id="sector_masivo" readonly placeholder="SELECCIONE SECTOR..." 
                 onclick="abrirModalSectores('sector_masivo')"
+                oninput="this.value = this.value.toUpperCase()"
                 class="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white cursor-pointer select-none shadow-sm">
               <button type="button" onclick="abrirModalSectores('sector_masivo')" title="Buscar Sector Registrado"
                 class="absolute right-1 top-1 bottom-1 px-2.5 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-lg transition flex items-center justify-center border border-slate-200 no-print">
@@ -192,13 +193,14 @@
           <div>
             <label for="ref_direccion_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Ref. Dirección</label>
             <input type="text" id="ref_direccion_masivo" placeholder="Ej: Av. Principal / Frente al parque" 
+              oninput="this.value = this.value.toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white shadow-sm">
           </div>
 
           <div>
             <label for="mz_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mz / Manzana</label>
             <input type="text" id="mz_masivo" placeholder="Ej: 5" 
-              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white shadow-sm">
           </div>
         </div>
@@ -343,6 +345,7 @@
           <div class="sm:col-span-2 md:col-span-2">
             <label for="nombreB" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Apellidos y Nombres<span class="text-red-500">*</span></label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
+              oninput="this.value = this.value.toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none uppercase font-semibold text-slate-800 shadow-sm">
           </div>
 
@@ -353,7 +356,7 @@
 
           <div>
             <label for="sexo" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Sexo</label>
-            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
+            <select id="sexo" name="sexo" onchange="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
               <option value="">-- SELECCIONAR --</option>
               <option value="M">MASCULINO</option>
               <option value="F">FEMENINO</option>
@@ -362,17 +365,17 @@
 
           <div>
             <label for="hclinica" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">HC</label>
-            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
+            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
           </div>
 
           <div>
             <label for="telefono" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Celular</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm uppercase">
+            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm uppercase">
           </div>
 
           <div>
             <label for="estado_civil" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Estado Civil</label>
-            <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
+            <select id="estado_civil" name="estado_civil" onchange="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
               <option value="">-- SELECCIONAR --</option>
               <option value="SOLTERO">SOLTERO</option>
               <option value="CASADO">CASADO</option>
@@ -387,6 +390,7 @@
             <div class="relative flex items-center">
               <input type="text" id="sector" name="sector" readonly placeholder="SELECCIONE SECTOR..." 
                 onclick="abrirModalSectores('sector')"
+                oninput="this.value = this.value.toUpperCase()"
                 class="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white cursor-pointer select-none shadow-sm">
               <button type="button" onclick="abrirModalSectores('sector')" title="Buscar Sector Registrado"
                 class="absolute right-1 top-1 bottom-1 px-2.5 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-lg transition flex items-center justify-center border border-slate-200">
@@ -397,13 +401,13 @@
 
           <div>
             <label for="ref_direccion" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Ref. Dirección</label>
-            <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase shadow-sm">
+            <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase shadow-sm">
           </div>
 
           <div>
             <label for="mz" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Mz</label>
             <input type="text" id="mz" name="mz" placeholder="Solo Números" 
-              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold shadow-sm uppercase">
           </div>
         </div>
@@ -419,24 +423,6 @@
       </form>
     </div>
   </main>
-
-  <!-- MODAL DE NOTIFICACIÓN DE CAMBIOS (POP-UP) -->
-  <div id="modalNotificacion" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm overflow-hidden animate-in fade-in zoom-in duration-200">
-      <div class="p-5 text-center space-y-3">
-        <div id="modalIconoNotif" class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-          <i data-lucide="bell" class="w-6 h-6"></i>
-        </div>
-        <h3 id="modalTituloNotif" class="text-base font-extrabold text-slate-800">Notificación del Sistema</h3>
-        <p id="modalMensajeNotif" class="text-xs text-slate-600 leading-relaxed font-semibold"></p>
-      </div>
-      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-center">
-        <button type="button" onclick="cerrarModalNotificacion()" class="w-full px-4 py-2 bg-blue-700 hover:bg-blue-800 active:scale-95 text-white font-bold text-xs rounded-xl transition">
-          Aceptar
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- MODAL DE CONFIRMACIÓN ELEGANTE PARA DESVINCULAR (NO PRINT) -->
   <div id="modalConfirmDesvincular" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
@@ -477,7 +463,7 @@
       </div>
       
       <div class="p-3.5 border-b bg-slate-50">
-        <input type="text" id="filtroSectores" oninput="filtrarListaSectores(this.value)" placeholder="Escriba para buscar sector..."
+        <input type="text" id="filtroSectores" oninput="filtrarListaSectores(this.value.toUpperCase())" placeholder="Escriba para buscar sector..."
           class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase font-medium bg-white shadow-sm">
       </div>
 
@@ -566,8 +552,8 @@
         const item = document.createElement('button');
         item.type = 'button';
         item.className = "w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-xl border border-transparent hover:border-blue-200 transition flex items-center justify-between uppercase";
-        item.innerHTML = `<span>${sec}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
-        item.onclick = () => seleccionarSectorModal(sec);
+        item.innerHTML = `<span>${sec.toUpperCase()}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
+        item.onclick = () => seleccionarSectorModal(sec.toUpperCase());
         cont.appendChild(item);
       });
       lucide.createIcons();
@@ -780,7 +766,7 @@
       const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
       if (!persona) return;
 
-      mostrarAlerta(`⏳ Desvinculando a ${persona.nombreB.toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200");
+      mostrarAlerta(`⏳ Desvinculando a ${(persona.nombreB || '').toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200");
 
       try {
         const formData = {
@@ -807,15 +793,12 @@
         });
 
         const textResult = await response.text();
-        const msg = `✅ ${persona.nombreB.toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`;
-        mostrarAlerta(msg, "bg-emerald-50 text-emerald-900 border-emerald-200");
-        mostrarModalNotificacion("Desvinculación Exitosa", msg, "success");
+        mostrarAlerta(`✅ ${(persona.nombreB || '').toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
         
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al desvincular:", error);
         mostrarAlerta("❌ Ocurrió un error al intentar desvincular al integrante.", "bg-red-50 text-red-900 border-red-200");
-        mostrarModalNotificacion("Error", "Ocurrió un error al intentar desvincular al integrante.", "error");
       }
     });
 
@@ -846,12 +829,10 @@
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-blue-50 text-blue-900 border-blue-200");
-        mostrarModalNotificacion("Dirección Actualizada", textResult, "info");
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al actualizar dirección masiva:", error);
         mostrarAlerta("❌ Error al intentar actualizar la dirección masivamente.", "bg-red-50 text-red-900 border-red-200");
-        mostrarModalNotificacion("Error", "Error al intentar actualizar la dirección masivamente.", "error");
       } finally {
         btnDireccionTodos.disabled = false;
         btnDireccionTodos.innerHTML = `<i data-lucide="check-check" class="w-4 h-4"></i> Asignar Sector, Ref y Mz a Todos los DNI`;
@@ -884,12 +865,10 @@
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-indigo-50 text-indigo-900 border-indigo-200");
-        mostrarModalNotificacion("GPS Actualizado", textResult, "info");
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al actualizar GPS masivo:", error);
         mostrarAlerta("❌ Error al intentar actualizar el GPS masivamente.", "bg-red-50 text-red-900 border-red-200");
-        mostrarModalNotificacion("Error", "Error al intentar actualizar el GPS masivamente.", "error");
       } finally {
         btnGpsTodos.disabled = false;
         btnGpsTodos.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar a Familia`;
@@ -920,18 +899,18 @@
         tr.className = "hover:bg-blue-50/50 transition font-mono text-[11px]";
         tr.innerHTML = `
           <td class="p-2 border-r font-bold text-slate-500 text-center">${item.row || '-'}</td>
-          <td class="p-2 border-r font-bold text-slate-900 uppercase">${item.dni || ''}</td>
+          <td class="p-2 border-r font-bold text-slate-900">${item.dni || ''}</td>
           <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${(item.nombreB || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 uppercase">${item.fn || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${item.fn || ''}</td>
           <td class="p-2 border-r text-center font-bold text-indigo-700 font-sans">${edadTexto}</td>
-          <td class="p-2 border-r text-center font-bold text-slate-700 uppercase">${(item.sexo || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.hclinica || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.telefono || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.estado_civil || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print uppercase">${(item.sector || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print uppercase">${(item.ref_direccion || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print uppercase">${(item.mz || '').toUpperCase()}</td>
-          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print uppercase">${(item.georeferencia || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-center font-bold text-slate-700">${(item.sexo || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.hclinica || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.telefono || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.estado_civil || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.sector || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.ref_direccion || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print">${(item.mz || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print">${(item.georeferencia || '').toUpperCase()}</td>
           <td class="p-2 text-center font-sans no-print flex justify-center gap-1">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
               class="px-2 py-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-lg font-bold text-[10px] shadow-sm transition" title="Editar Integrante">
@@ -1051,11 +1030,10 @@
 
       const ffamiliarTexto = String(ffamiliarVal).padStart(7, '0');
 
-      // CONVERSIÓN COMPLETA A MAYÚSCULAS ANTES DE ENVIAR
       const formData = {
         row: document.getElementById('row').value || null,
         ffamiliar: ffamiliarTexto,
-        georeferencia: georeferencia.toUpperCase(),
+        georeferencia: georeferencia,
         dni: String(document.getElementById('dni').value.trim()).toUpperCase(),
         nombreB: document.getElementById('nombreB').value.trim().toUpperCase(),
         fn: document.getElementById('fn').value,
@@ -1063,7 +1041,7 @@
         hclinica: document.getElementById('hclinica').value.trim().toUpperCase(),
         telefono: document.getElementById('telefono').value.trim().toUpperCase(),
         estado_civil: document.getElementById('estado_civil').value.toUpperCase(),
-        sector: sectorVal.toUpperCase(),
+        sector: sectorVal,
         ref_direccion: document.getElementById('ref_direccion').value.trim().toUpperCase(),
         mz: document.getElementById('mz').value.trim().toUpperCase()
       };
@@ -1082,7 +1060,6 @@
 
         const textResult = await response.text();
         mostrarAlerta(textResult, "bg-emerald-50 text-emerald-900 border-emerald-200");
-        mostrarModalNotificacion("Guardado Exitoso", textResult, "success");
 
         await buscarFichaFamiliar();
         prepararFormularioNuevo();
@@ -1090,7 +1067,6 @@
       } catch (error) {
         console.error("Error al guardar:", error);
         mostrarAlerta("⚠️ Ocurrió un error al intentar guardar los datos.", "bg-red-50 text-red-900 border-red-200");
-        mostrarModalNotificacion("Error", "Ocurrió un error al intentar guardar los datos.", "error");
       } finally {
         btnGuardar.disabled = false;
         btnGuardar.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Guardar / Actualizar`;
@@ -1128,35 +1104,6 @@
       alertDiv.className = `p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-sm border ${clasesCss}`;
       alertDiv.innerHTML = mensaje;
       alertDiv.classList.remove('hidden');
-    }
-
-    // MODAL DE NOTIFICACIÓN QUE SALTA EN PANTALLA
-    function mostrarModalNotificacion(titulo, mensaje, tipo = "info") {
-      const modal = document.getElementById('modalNotificacion');
-      const modalTitulo = document.getElementById('modalTituloNotif');
-      const modalMensaje = document.getElementById('modalMensajeNotif');
-      const modalIcono = document.getElementById('modalIconoNotif');
-
-      modalTitulo.textContent = titulo;
-      modalMensaje.textContent = mensaje;
-
-      if (tipo === "success") {
-        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600";
-        modalIcono.innerHTML = `<i data-lucide="check-circle" class="w-6 h-6"></i>`;
-      } else if (tipo === "error") {
-        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600";
-        modalIcono.innerHTML = `<i data-lucide="alert-triangle" class="w-6 h-6"></i>`;
-      } else {
-        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600";
-        modalIcono.innerHTML = `<i data-lucide="info" class="w-6 h-6"></i>`;
-      }
-
-      lucide.createIcons();
-      modal.classList.remove('hidden');
-    }
-
-    function cerrarModalNotificacion() {
-      document.getElementById('modalNotificacion').classList.add('hidden');
     }
   </script>
 </body>
