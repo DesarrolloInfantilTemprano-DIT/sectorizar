@@ -27,7 +27,7 @@
         font-size: 9pt !important;
         padding-bottom: 0 !important;
       }
-      header, .no-print, #statusAlert {
+      header, .no-print, #statusAlert, #modalConfirmDesvincular {
         display: none !important;
       }
       main {
@@ -44,10 +44,10 @@
         border-radius: 8px !important;
       }
       table {
-        font-size: 8pt !important;
+        font-size: 8.5pt !important;
       }
       th, td {
-        padding: 3px 4px !important;
+        padding: 4px 5px !important;
       }
       .print-header {
         display: flex !important;
@@ -56,6 +56,10 @@
         border-bottom: 2px solid #1e3a8a;
         padding-bottom: 6px;
         margin-bottom: 8px;
+      }
+      /* OCULTAR COLUMNAS REPETITIVAS SOLO AL IMPRIMIR */
+      .col-repeat-print {
+        display: none !important;
       }
     }
 
@@ -107,17 +111,17 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-5 space-y-5">
-    <div id="statusAlert" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-md border no-print"></div>
+    <!-- ALERTA DINÁMICA PRINCIPAL DE ESTADO Y CARGA -->
+    <div id="statusAlert" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-md border no-print flex items-center gap-3"></div>
 
-    <!-- PASO 1: FICHA FAMILIAR, UBICACIÓN Y GEORREFERENCIA MASIVA -->
+    <!-- PASO 1: DATOS FAMILIARES -->
     <div class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-6 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
           <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-blue-700 text-xs font-black">1</span>
-          Ficha Familiar, Ubicación y Georreferencia Masiva
+          DATOS FAMILIARES
         </h2>
         <div class="flex items-center gap-2">
-          <!-- BOTÓN PARA CONSULTAR OTRA FICHA FAMILIAR -->
           <button type="button" onclick="nuevaConsultaFicha()" 
             class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold rounded-xl text-xs flex items-center gap-1 border border-slate-300 transition shadow-sm no-print">
             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-slate-600"></i> Nueva Consulta
@@ -149,7 +153,7 @@
           </label>
           <div class="flex flex-col sm:flex-row gap-2">
             <input type="text" id="georeferencia" name="georeferencia" readonly placeholder="-9.XXXXX, -75.XXXXX"
-              class="flex-1 px-3 py-2.5 border border-slate-200 bg-slate-100/70 rounded-xl outline-none text-slate-600 font-mono text-xs font-semibold">
+              class="flex-1 px-3 py-2.5 border border-slate-200 bg-slate-100/70 rounded-xl outline-none text-slate-600 font-mono text-xs font-semibold uppercase">
             
             <div class="flex gap-2 no-print">
               <button type="button" onclick="obtenerGeolocalizacion()"
@@ -159,7 +163,7 @@
 
               <button type="button" id="btnGpsTodos" onclick="actualizarGpsTodosIntegrantes()"
                 class="flex-1 sm:flex-none px-3.5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold transition shadow-sm">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar a Familia
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar GPS a toda la Familia
               </button>
             </div>
           </div>
@@ -169,7 +173,7 @@
       <!-- SECTOR, REF DIRECCIÓN Y MZ PARA LA FAMILIA -->
       <div class="bg-slate-50/80 p-3.5 sm:p-4 rounded-xl border border-slate-200/60 space-y-3">
         <span class="text-[11px] font-extrabold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
-          <i data-lucide="map" class="w-4 h-4 text-blue-600 no-print"></i> Asignación Masiva de Dirección
+          <i data-lucide="map" class="w-4 h-4 text-blue-600 no-print"></i> Dirección
         </span>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
@@ -196,14 +200,14 @@
             <label for="mz_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mz / Manzana</label>
             <input type="text" id="mz_masivo" placeholder="Ej: 5" 
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm">
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm uppercase">
           </div>
         </div>
 
         <div class="flex justify-end pt-1 no-print">
           <button type="button" id="btnDireccionTodos" onclick="actualizarDireccionTodosIntegrantes()"
             class="w-full sm:w-auto px-4 py-2 bg-blue-800 hover:bg-blue-900 active:scale-95 text-white rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold transition shadow-sm">
-            <i data-lucide="check-check" class="w-4 h-4"></i> Asignar Sector, Ref y Mz a Todos los DNI
+            <i data-lucide="check-check" class="w-4 h-4"></i> Actualizar Sector, Ref y Mz a todos
           </button>
         </div>
       </div>
@@ -216,7 +220,7 @@
       </h3>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center">
         <div class="p-2 bg-blue-50 rounded-xl border border-blue-100">
-          <span class="block text-[10px] font-bold text-blue-700 uppercase">Niños (<12a)</span>
+          <span class="block text-[10px] font-bold text-blue-700 uppercase">Niños (0 a 11a)</span>
           <span id="cantNinos" class="text-base font-extrabold text-blue-900 font-mono">0</span>
         </div>
         <div class="p-2 bg-teal-50 rounded-xl border border-teal-100">
@@ -242,7 +246,7 @@
       </div>
     </div>
 
-    <!-- PASO 2: LISTADO DE INTEGRANTES CON EXPORTACIÓN Y OPCIÓN DE DESVINCULAR -->
+    <!-- PASO 2: LISTADO DE INTEGRANTES -->
     <div id="seccionIntegrantes" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-6 space-y-5">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-slate-100 pb-3">
         <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -250,7 +254,6 @@
           Integrantes del Grupo Familiar
         </h2>
         
-        <!-- BOTONES DE EXPORTACIÓN Y NUEVO INTEGRANTE (NO PRINT) -->
         <div class="flex flex-wrap gap-2 w-full md:w-auto no-print">
           <button type="button" onclick="exportarExcel()" 
             class="flex-1 md:flex-none px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
@@ -269,7 +272,7 @@
         </div>
       </div>
 
-      <!-- TABLA ADAPTATIVA -->
+      <!-- TABLA ADAPTATIVA CON OCULTAMIENTO INTELIGENTE EN IMPRESIÓN -->
       <div class="overflow-x-auto rounded-xl border border-slate-200">
         <table class="w-full text-[11px] text-left border-collapse min-w-[950px] sm:min-w-full">
           <thead>
@@ -283,10 +286,10 @@
               <th class="p-2 border-r">HC</th>
               <th class="p-2 border-r">Teléfono</th>
               <th class="p-2 border-r">Est. Civil</th>
-              <th class="p-2 border-r">Sector</th>
-              <th class="p-2 border-r">Ref. Direc</th>
-              <th class="p-2 border-r text-center">Mz</th>
-              <th class="p-2 border-r">GPS</th>
+              <th class="p-2 border-r col-repeat-print">Sector</th>
+              <th class="p-2 border-r col-repeat-print">Ref. Direc</th>
+              <th class="p-2 border-r text-center col-repeat-print">Mz</th>
+              <th class="p-2 border-r col-repeat-print">GPS</th>
               <th class="p-2 text-center no-print">Acciones</th>
             </tr>
           </thead>
@@ -312,7 +315,6 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
-          <!-- BÚSQUEDA POR DNI -->
           <div>
             <label for="dni" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
               DNI<span class="text-red-500">*</span>
@@ -320,7 +322,7 @@
             <div class="relative flex rounded-xl overflow-hidden shadow-sm">
               <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
                 oninput="this.value = this.value.replace(/[^0-9]/g, ''); evaluarConsultaDNI(this.value)"
-                class="w-full pl-3 pr-8 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs font-bold text-slate-800">
+                class="w-full pl-3 pr-8 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs font-bold text-slate-800 uppercase">
               <button type="button" onclick="consultarDniIndividual()" title="Buscar DNI en Censo"
                 class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
                 <i data-lucide="search" class="w-4 h-4"></i>
@@ -328,14 +330,13 @@
             </div>
           </div>
 
-          <!-- FICHA FAMILIAR ASOCIADA -->
           <div>
             <label for="ficha_integrante_read" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
               Ficha Familiar <span class="text-[9px] text-blue-600 font-normal">(Encontrada)</span>
             </label>
             <div class="relative">
               <input type="text" id="ficha_integrante_read" readonly placeholder="-- N/A --"
-                class="w-full pl-8 pr-3 py-2 border border-slate-200 bg-slate-100 rounded-xl text-xs font-mono font-bold text-blue-800 outline-none select-none">
+                class="w-full pl-8 pr-3 py-2 border border-slate-200 bg-slate-100 rounded-xl text-xs font-mono font-bold text-blue-800 outline-none select-none uppercase">
               <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-500 absolute left-2.5 top-2.5"></i>
             </div>
           </div>
@@ -353,8 +354,8 @@
 
           <div>
             <label for="sexo" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Sexo</label>
-            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm">
-              <option value="">-- Seleccionar --</option>
+            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
+              <option value="">-- SELECCIONAR --</option>
               <option value="M">MASCULINO</option>
               <option value="F">FEMENINO</option>
             </select>
@@ -362,18 +363,18 @@
 
           <div>
             <label for="hclinica" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">HC</label>
-            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
+            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase font-mono">
           </div>
 
           <div>
             <label for="telefono" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Celular</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm">
+            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm uppercase">
           </div>
 
           <div>
             <label for="estado_civil" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Estado Civil</label>
-            <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm">
-              <option value="">-- Seleccionar --</option>
+            <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
+              <option value="">-- SELECCIONAR --</option>
               <option value="SOLTERO">SOLTERO</option>
               <option value="CASADO">CASADO</option>
               <option value="CONVIVIENTE">CONVIVIENTE</option>
@@ -404,7 +405,7 @@
             <label for="mz" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Mz</label>
             <input type="text" id="mz" name="mz" placeholder="Solo Números" 
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold shadow-sm">
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold uppercase shadow-sm">
           </div>
         </div>
 
@@ -420,7 +421,33 @@
     </div>
   </main>
 
-  <!-- MODAL DE BÚSQUEDA DE SECTORES RESTRINGIDO (NO PRINT) -->
+  <!-- MODAL DE CONFIRMACIÓN ELEGANTE PARA DESVINCULAR (NO PRINT) -->
+  <div id="modalConfirmDesvincular" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="p-5 text-center space-y-3">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+          <i data-lucide="user-minus" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-800">¿Quitar Integrante de la Ficha?</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          ¿Está seguro de quitar a <strong id="modalNombrePersona" class="text-slate-900"></strong> (DNI: <span id="modalDniPersona" class="font-mono font-bold"></span>) de este grupo familiar?
+        </p>
+        <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200/60 text-[11px] text-amber-800 font-medium">
+          ℹ️ Los datos de la persona <strong>NO se eliminarán</strong> de la base de datos general.
+        </div>
+      </div>
+      <div class="p-3.5 bg-slate-50 border-t border-slate-100 flex gap-2 justify-end">
+        <button type="button" onclick="cerrarModalDesvincular()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button type="button" id="btnConfirmarQuitar" class="px-5 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1">
+          <i data-lucide="check" class="w-4 h-4"></i> Confirmar y Quitar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE BÚSQUEDA DE SECTORES (NO PRINT) -->
   <div id="modalSectores" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 no-print">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 w-full max-w-lg overflow-hidden flex flex-col max-h-[85vh] transition-all">
       <div class="p-4 bg-gradient-to-r from-blue-700 to-indigo-700 text-white flex justify-between items-center">
@@ -452,6 +479,7 @@
 
     const URL_CENSO = "https://script.google.com/macros/s/AKfycbz-PaNW15W43wBS8AmlEHfFe4QrUnITK-8yEnvwoGUnpw7PdbpNvJhPCc4q5qDs8c3WWg/exec";
     let listaIntegrantes = [];
+    let dniParaDesvincular = null;
 
     function actualizarRelojYFecha() {
       const ahora = new Date();
@@ -486,7 +514,7 @@
       "933-COMUNIDAD MOYANO", "933-COMUNIDAD NUEVA ALTURA", "933-COMUNIDAD PACHACUTEC",
       "933-COMUNIDAD PAPAYAL", "933-COMUNIDAD PICUROYACU", "933-COMUNIDAD SANTA ROSA DE CASTILLA",
       "933-COMUNIDAD SHAMIRO", "933-COMUNIDAD SINCHI ROCCA", "933-COMUNIDAD VENADO PAMPA",
-      "933-COMUNIDAD YURIMAGUAS", "933-SIN SECTOR"
+      "933-COMUNIDAD YURIMAGUAS", "933-SIN SECTOR", "933-OTRO DISTRITO"
     ];
 
     let idInputSectorDestino = '';
@@ -520,7 +548,7 @@
       lista.forEach(sec => {
         const item = document.createElement('button');
         item.type = 'button';
-        item.className = "w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-xl border border-transparent hover:border-blue-200 transition flex items-center justify-between";
+        item.className = "w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-xl border border-transparent hover:border-blue-200 transition flex items-center justify-between uppercase";
         item.innerHTML = `<span>${sec}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
         item.onclick = () => seleccionarSectorModal(sec);
         cont.appendChild(item);
@@ -536,12 +564,11 @@
 
     function seleccionarSectorModal(sectorSeleccionado) {
       if (idInputSectorDestino) {
-        document.getElementById(idInputSectorDestino).value = sectorSeleccionado;
+        document.getElementById(idInputSectorDestino).value = sectorSeleccionado.toUpperCase();
       }
       cerrarModalSectores();
     }
 
-    // BOTÓN: NUEVA CONSULTA
     function nuevaConsultaFicha() {
       document.getElementById('ffamiliar').value = "";
       document.getElementById('georeferencia').value = "";
@@ -564,21 +591,21 @@
       const ffamiliar = String(ffamiliarVal).padStart(7, '0');
       document.getElementById('ffamiliar').value = ffamiliar;
 
-      mostrarAlerta("🔍 Buscando grupo familiar...", "bg-blue-50 text-blue-900 border-blue-200");
+      mostrarAlerta("🔍 Buscando grupo familiar en Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
 
       try {
-        const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}`);
+        const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&_t=${Date.now()}`);
         const data = await response.json();
 
         if (data && data.status === "ok" && data.integrantes && data.integrantes.length > 0) {
           listaIntegrantes = data.integrantes;
           
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
-          document.getElementById('georeferencia').value = personaConGps ? personaConGps.georeferencia : "";
+          document.getElementById('georeferencia').value = personaConGps ? String(personaConGps.georeferencia).toUpperCase() : "";
 
-          document.getElementById('sector_masivo').value = listaIntegrantes[0].sector || "";
-          document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion || "";
-          document.getElementById('mz_masivo').value = listaIntegrantes[0].mz || "";
+          document.getElementById('sector_masivo').value = listaIntegrantes[0].sector ? String(listaIntegrantes[0].sector).toUpperCase() : "";
+          document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion ? String(listaIntegrantes[0].ref_direccion).toUpperCase() : "";
+          document.getElementById('mz_masivo').value = listaIntegrantes[0].mz ? String(listaIntegrantes[0].mz).toUpperCase() : "";
 
           renderizarTablaIntegrantes();
           limpiarFormularioPersona();
@@ -656,18 +683,18 @@
     }
 
     async function consultarDniIndividual() {
-      const dni = document.getElementById('dni').value.trim();
+      const dni = document.getElementById('dni').value.trim().toUpperCase();
       if (!/^\d{8}$/.test(dni)) return;
 
-      mostrarAlerta(`🔍 Consultando DNI ${dni} en la base de datos del Censo...`, "bg-blue-50 text-blue-900 border-blue-200");
+      mostrarAlerta(`🔍 Consultando DNI ${dni} en la base de datos del Censo...`, "bg-blue-50 text-blue-900 border-blue-200", true);
 
       try {
-        const response = await fetch(`${URL_CENSO}?action=buscar&dni=${encodeURIComponent(dni)}`);
+        const response = await fetch(`${URL_CENSO}?action=buscar&dni=${encodeURIComponent(dni)}&_t=${Date.now()}`);
         const data = await response.json();
 
         if (data && data.status === "ok") {
           document.getElementById('row').value = data.row || "";
-          document.getElementById('nombreB').value = data.nombreB || "";
+          document.getElementById('nombreB').value = data.nombreB ? String(data.nombreB).toUpperCase() : "";
           
           if (data.fn) {
             const partes = data.fn.split('/');
@@ -676,13 +703,13 @@
             document.getElementById('fn').value = "";
           }
 
-          document.getElementById('sexo').value = data.sexo || "";
-          document.getElementById('hclinica').value = data.hclinica || "";
-          document.getElementById('telefono').value = data.telefono || "";
-          document.getElementById('estado_civil').value = data.estado_civil || "";
-          document.getElementById('sector').value = data.sector || "";
-          document.getElementById('ref_direccion').value = data.ref_direccion || "";
-          document.getElementById('mz').value = data.mz || "";
+          document.getElementById('sexo').value = data.sexo ? String(data.sexo).toUpperCase() : "";
+          document.getElementById('hclinica').value = data.hclinica ? String(data.hclinica).toUpperCase() : "";
+          document.getElementById('telefono').value = data.telefono ? String(data.telefono).toUpperCase() : "";
+          document.getElementById('estado_civil').value = data.estado_civil ? String(data.estado_civil).toUpperCase() : "";
+          document.getElementById('sector').value = data.sector ? String(data.sector).toUpperCase() : "";
+          document.getElementById('ref_direccion').value = data.ref_direccion ? String(data.ref_direccion).toUpperCase() : "";
+          document.getElementById('mz').value = data.mz ? String(data.mz).toUpperCase() : "";
 
           document.getElementById('ficha_integrante_read').value = data.ffamiliar ? String(data.ffamiliar).padStart(7, '0') : "-- N/A --";
 
@@ -700,9 +727,9 @@
           document.getElementById('estado_civil').value = "";
           document.getElementById('ficha_integrante_read').value = "-- NUEVO --";
 
-          document.getElementById('sector').value = document.getElementById('sector_masivo').value || "";
-          document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value || "";
-          document.getElementById('mz').value = document.getElementById('mz_masivo').value || "";
+          document.getElementById('sector').value = document.getElementById('sector_masivo').value.toUpperCase() || "";
+          document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value.toUpperCase() || "";
+          document.getElementById('mz').value = document.getElementById('mz_masivo').value.toUpperCase() || "";
 
           document.getElementById('badgeEstado').textContent = "NUEVO REGISTRO MANUAL";
           document.getElementById('badgeEstado').className = "text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold";
@@ -711,34 +738,49 @@
         }
       } catch (error) {
         console.error("Error al consultar DNI:", error);
+        mostrarAlerta("❌ Error de comunicación al verificar el DNI.", "bg-red-50 text-red-900 border-red-200");
       }
     }
 
-    async function desvincularIntegrante(dni, nombre) {
-      if (!confirm(`¿Está seguro de quitar a "${nombre}" (DNI: ${dni}) de este grupo familiar?\n\nLos datos del integrante NO se eliminarán de la base de datos.`)) {
-        return;
-      }
+    // ABRIR MODAL ELEGANTE PARA DESVINCULAR INTEGRANTE
+    function abrirModalDesvincular(dni, nombre) {
+      dniParaDesvincular = dni;
+      document.getElementById('modalNombrePersona').textContent = nombre.toUpperCase();
+      document.getElementById('modalDniPersona').textContent = dni;
+      document.getElementById('modalConfirmDesvincular').classList.remove('hidden');
+    }
 
-      mostrarAlerta(`⏳ Desvinculando a ${nombre}...`, "bg-amber-50 text-amber-900 border-amber-200");
+    function cerrarModalDesvincular() {
+      dniParaDesvincular = null;
+      document.getElementById('modalConfirmDesvincular').classList.add('hidden');
+    }
+
+    document.getElementById('btnConfirmarQuitar').addEventListener('click', async function() {
+      if (!dniParaDesvincular) return;
+
+      const dni = dniParaDesvincular;
+      cerrarModalDesvincular();
+
+      const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
+      if (!persona) return;
+
+      mostrarAlerta(`⏳ Desvinculando a ${(persona.nombreB || '').toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200", true);
 
       try {
-        const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
-        if (!persona) return;
-
         const formData = {
           row: persona.row,
           ffamiliar: "0000000",
-          georeferencia: persona.georeferencia || "",
-          dni: persona.dni,
-          nombreB: persona.nombreB,
+          georeferencia: (persona.georeferencia || "").toUpperCase(),
+          dni: String(persona.dni).toUpperCase(),
+          nombreB: (persona.nombreB || "").toUpperCase(),
           fn: persona.fn || "",
-          sexo: persona.sexo || "",
-          hclinica: persona.hclinica || "",
-          telefono: persona.telefono || "",
-          estado_civil: persona.estado_civil || "",
-          sector: persona.sector || "",
-          ref_direccion: persona.ref_direccion || "",
-          mz: persona.mz || ""
+          sexo: (persona.sexo || "").toUpperCase(),
+          hclinica: (persona.hclinica || "").toUpperCase(),
+          telefono: (persona.telefono || "").toUpperCase(),
+          estado_civil: (persona.estado_civil || "").toUpperCase(),
+          sector: (persona.sector || "").toUpperCase(),
+          ref_direccion: (persona.ref_direccion || "").toUpperCase(),
+          mz: (persona.mz || "").toUpperCase()
         };
 
         const response = await fetch(URL_CENSO, {
@@ -749,20 +791,20 @@
         });
 
         const textResult = await response.text();
-        mostrarAlerta(`✅ ${nombre} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
+        mostrarAlerta(`✅ ${persona.nombreB.toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
         
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al desvincular:", error);
         mostrarAlerta("❌ Ocurrió un error al intentar desvincular al integrante.", "bg-red-50 text-red-900 border-red-200");
       }
-    }
+    });
 
     async function actualizarDireccionTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const sector = document.getElementById('sector_masivo').value.trim();
-      const refDireccion = document.getElementById('ref_direccion_masivo').value.trim();
-      const mz = document.getElementById('mz_masivo').value.trim();
+      const sector = document.getElementById('sector_masivo').value.trim().toUpperCase();
+      const refDireccion = document.getElementById('ref_direccion_masivo').value.trim().toUpperCase();
+      const mz = document.getElementById('mz_masivo').value.trim().toUpperCase();
 
       if (!ffamiliarVal) {
         mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida en el Paso 1.", "bg-amber-50 text-amber-900 border-amber-200");
@@ -780,8 +822,10 @@
       btnDireccionTodos.disabled = true;
       btnDireccionTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Aplicando...`;
 
+      mostrarAlerta("⏳ Actualizando dirección masivamente en Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
+
       try {
-        const response = await fetch(`${URL_CENSO}?action=actualizarDireccionFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&sector=${encodeURIComponent(sector)}&ref_direccion=${encodeURIComponent(refDireccion)}&mz=${encodeURIComponent(mz)}`);
+        const response = await fetch(`${URL_CENSO}?action=actualizarDireccionFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&sector=${encodeURIComponent(sector)}&ref_direccion=${encodeURIComponent(refDireccion)}&mz=${encodeURIComponent(mz)}&_t=${Date.now()}`);
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-blue-50 text-blue-900 border-blue-200");
@@ -798,7 +842,7 @@
 
     async function actualizarGpsTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const gps = document.getElementById('georeferencia').value.trim();
+      const gps = document.getElementById('georeferencia').value.trim().toUpperCase();
 
       if (!ffamiliarVal) {
         mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida en el Paso 1.", "bg-amber-50 text-amber-900 border-amber-200");
@@ -816,8 +860,10 @@
       btnGpsTodos.disabled = true;
       btnGpsTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Actualizando...`;
 
+      mostrarAlerta("⏳ Aplicando coordenadas GPS a todos los integrantes...", "bg-indigo-50 text-indigo-900 border-indigo-200", true);
+
       try {
-        const response = await fetch(`${URL_CENSO}?action=actualizarGpsFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&georeferencia=${encodeURIComponent(gps)}`);
+        const response = await fetch(`${URL_CENSO}?action=actualizarGpsFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&georeferencia=${encodeURIComponent(gps)}&_t=${Date.now()}`);
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-indigo-50 text-indigo-900 border-indigo-200");
@@ -839,7 +885,7 @@
       if (listaIntegrantes.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="14" class="p-6 text-center text-slate-400 font-medium text-xs">
+            <td colspan="14" class="p-6 text-center text-slate-400 font-medium text-xs uppercase">
               No hay miembros registrados en esta Ficha Familiar.
             </td>
           </tr>`;
@@ -852,27 +898,27 @@
         const edadTexto = edadVal !== null ? `${edadVal} a` : '-';
 
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-blue-50/50 transition font-mono text-[11px]";
+        tr.className = "hover:bg-blue-50/50 transition font-mono text-[11px] uppercase";
         tr.innerHTML = `
           <td class="p-2 border-r font-bold text-slate-500 text-center">${item.row || '-'}</td>
-          <td class="p-2 border-r font-bold text-slate-900">${item.dni || ''}</td>
-          <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${item.nombreB || ''}</td>
+          <td class="p-2 border-r font-bold text-slate-900">${(item.dni || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${(item.nombreB || '').toUpperCase()}</td>
           <td class="p-2 border-r font-sans text-slate-600">${item.fn || ''}</td>
           <td class="p-2 border-r text-center font-bold text-indigo-700 font-sans">${edadTexto}</td>
-          <td class="p-2 border-r text-center font-bold text-slate-700">${item.sexo || ''}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.hclinica || ''}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.telefono || ''}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.estado_civil || ''}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.sector || ''}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.ref_direccion || ''}</td>
-          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center">${item.mz || ''}</td>
-          <td class="p-2 border-r text-[10px] font-bold text-indigo-600">${item.georeferencia || ''}</td>
+          <td class="p-2 border-r text-center font-bold text-slate-700">${(item.sexo || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.hclinica || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.telefono || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${(item.estado_civil || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.sector || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.ref_direccion || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print">${(item.mz || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print">${(item.georeferencia || '').toUpperCase()}</td>
           <td class="p-2 text-center font-sans no-print flex justify-center gap-1">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
               class="px-2 py-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-lg font-bold text-[10px] shadow-sm transition" title="Editar Integrante">
               Editar
             </button>
-            <button onclick="desvincularIntegrante('${item.dni}', '${item.nombreB.replace(/'/g, "\\'")}')" 
+            <button onclick="abrirModalDesvincular('${item.dni}', '${(item.nombreB || '').replace(/'/g, "\\'").toUpperCase()}')" 
               class="px-2 py-1 bg-red-100 hover:bg-red-200 active:scale-95 text-red-700 rounded-lg font-bold text-[10px] border border-red-200 transition" title="Quitar de este grupo sin borrar datos">
               Quitar
             </button>
@@ -889,8 +935,8 @@
       if (!persona) return;
 
       document.getElementById('row').value = persona.row || "";
-      document.getElementById('dni').value = persona.dni || "";
-      document.getElementById('nombreB').value = persona.nombreB || "";
+      document.getElementById('dni').value = (persona.dni || "").toUpperCase();
+      document.getElementById('nombreB').value = (persona.nombreB || "").toUpperCase();
       
       if (persona.fn) {
         const partes = persona.fn.split('/');
@@ -899,13 +945,13 @@
         document.getElementById('fn').value = "";
       }
 
-      document.getElementById('sexo').value = persona.sexo || "";
-      document.getElementById('hclinica').value = persona.hclinica || "";
-      document.getElementById('telefono').value = persona.telefono || "";
-      document.getElementById('estado_civil').value = persona.estado_civil || "";
-      document.getElementById('sector').value = persona.sector || "";
-      document.getElementById('ref_direccion').value = persona.ref_direccion || "";
-      document.getElementById('mz').value = persona.mz || "";
+      document.getElementById('sexo').value = (persona.sexo || "").toUpperCase();
+      document.getElementById('hclinica').value = (persona.hclinica || "").toUpperCase();
+      document.getElementById('telefono').value = (persona.telefono || "").toUpperCase();
+      document.getElementById('estado_civil').value = (persona.estado_civil || "").toUpperCase();
+      document.getElementById('sector').value = (persona.sector || "").toUpperCase();
+      document.getElementById('ref_direccion').value = (persona.ref_direccion || "").toUpperCase();
+      document.getElementById('mz').value = (persona.mz || "").toUpperCase();
 
       const ffamActual = document.getElementById('ffamiliar').value.trim();
       document.getElementById('ficha_integrante_read').value = ffamActual ? String(ffamActual).padStart(7, '0') : "-- N/A --";
@@ -924,12 +970,11 @@
       const ffamActual = document.getElementById('ffamiliar').value.trim();
       document.getElementById('ficha_integrante_read').value = ffamActual ? String(ffamActual).padStart(7, '0') : "-- NUEVO --";
 
-      if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value;
-      if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value;
-      if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value;
+      if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value.toUpperCase();
+      if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value.toUpperCase();
+      if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value.toUpperCase();
     }
 
-    // EXPORTAR A EXCEL (.XLSX)
     function exportarExcel() {
       const ffam = document.getElementById('ffamiliar').value.trim();
       if (!ffam || listaIntegrantes.length === 0) {
@@ -939,18 +984,18 @@
 
       const dataParaExcel = listaIntegrantes.map(item => ({
         "Ficha Familiar": ffam,
-        "DNI": item.dni,
-        "Apellidos y Nombres": item.nombreB,
+        "DNI": (item.dni || "").toUpperCase(),
+        "Apellidos y Nombres": (item.nombreB || "").toUpperCase(),
         "Fecha Nacimiento": item.fn,
         "Edad": calcularEdadExacta(item.fn) !== null ? calcularEdadExacta(item.fn) : "",
-        "Sexo": item.sexo,
-        "HC": item.hclinica,
-        "Teléfono": item.telefono,
-        "Estado Civil": item.estado_civil,
-        "Sector": item.sector,
-        "Referencia Dirección": item.ref_direccion,
-        "Manzana": item.mz,
-        "GPS": item.georeferencia
+        "Sexo": (item.sexo || "").toUpperCase(),
+        "HC": (item.hclinica || "").toUpperCase(),
+        "Teléfono": (item.telefono || "").toUpperCase(),
+        "Estado Civil": (item.estado_civil || "").toUpperCase(),
+        "Sector": (item.sector || "").toUpperCase(),
+        "Referencia Dirección": (item.ref_direccion || "").toUpperCase(),
+        "Manzana": (item.mz || "").toUpperCase(),
+        "GPS": (item.georeferencia || "").toUpperCase()
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(dataParaExcel);
@@ -959,7 +1004,6 @@
       XLSX.writeFile(workbook, `Ficha_Familiar_${ffam}.xlsx`);
     }
 
-    // EXPORTAR A PDF (FORMATO DE IMPRESIÓN OFICIAL VERTICAL 1 HOJA)
     function exportarPDF() {
       const ffam = document.getElementById('ffamiliar').value.trim();
       if (!ffam || listaIntegrantes.length === 0) {
@@ -973,8 +1017,8 @@
       e.preventDefault();
 
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const georeferencia = document.getElementById('georeferencia').value.trim();
-      const sectorVal = document.getElementById('sector').value.trim();
+      const georeferencia = document.getElementById('georeferencia').value.trim().toUpperCase();
+      const sectorVal = document.getElementById('sector').value.trim().toUpperCase();
 
       if (!ffamiliarVal) {
         mostrarAlerta("❌ Debe ingresar/asignar una Ficha Familiar en la sección 1 superior.", "bg-red-50 text-red-900 border-red-200");
@@ -988,25 +1032,28 @@
 
       const ffamiliarTexto = String(ffamiliarVal).padStart(7, '0');
 
+      // CONVERSIÓN COMPLETA A MAYÚSCULAS
       const formData = {
         row: document.getElementById('row').value || null,
         ffamiliar: ffamiliarTexto,
         georeferencia: georeferencia,
-        dni: String(document.getElementById('dni').value.trim()),
-        nombreB: document.getElementById('nombreB').value.trim(),
+        dni: String(document.getElementById('dni').value.trim()).toUpperCase(),
+        nombreB: document.getElementById('nombreB').value.trim().toUpperCase(),
         fn: document.getElementById('fn').value,
-        sexo: document.getElementById('sexo').value,
-        hclinica: document.getElementById('hclinica').value.trim(),
-        telefono: document.getElementById('telefono').value.trim(),
-        estado_civil: document.getElementById('estado_civil').value,
+        sexo: document.getElementById('sexo').value.toUpperCase(),
+        hclinica: document.getElementById('hclinica').value.trim().toUpperCase(),
+        telefono: document.getElementById('telefono').value.trim().toUpperCase(),
+        estado_civil: document.getElementById('estado_civil').value.toUpperCase(),
         sector: sectorVal,
-        ref_direccion: document.getElementById('ref_direccion').value.trim(),
-        mz: document.getElementById('mz').value.trim()
+        ref_direccion: document.getElementById('ref_direccion').value.trim().toUpperCase(),
+        mz: document.getElementById('mz').value.trim().toUpperCase()
       };
 
       const btnGuardar = document.getElementById('btnGuardar');
       btnGuardar.disabled = true;
       btnGuardar.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Guardando...`;
+
+      mostrarAlerta("⏳ Enviando datos a Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
 
       try {
         const response = await fetch(URL_CENSO, {
@@ -1034,11 +1081,12 @@
 
     function obtenerGeolocalizacion() {
       if ("geolocation" in navigator) {
+        mostrarAlerta("📍 Capturando coordenadas GPS...", "bg-blue-50 text-blue-900 border-blue-200", true);
         navigator.geolocation.getCurrentPosition(
           function(position) {
             const lat = position.coords.latitude.toFixed(6);
             const lng = position.coords.longitude.toFixed(6);
-            document.getElementById('georeferencia').value = `${lat}, ${lng}`;
+            document.getElementById('georeferencia').value = `${lat}, ${lng}`.toUpperCase();
             mostrarAlerta("📍 Ubicación GPS capturada correctamente.", "bg-emerald-50 text-emerald-900 border-emerald-200");
           },
           function(error) {
@@ -1057,11 +1105,15 @@
       document.getElementById('ficha_integrante_read').value = "-- N/A --";
     }
 
-    function mostrarAlerta(mensaje, clasesCss) {
+    // MOSTRAR ALERTA CON ANIMACIÓN DE CARGA DINÁMICA
+    function mostrarAlerta(mensaje, clasesCss, cargando = false) {
       const alertDiv = document.getElementById('statusAlert');
-      alertDiv.className = `p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-sm border ${clasesCss}`;
-      alertDiv.innerHTML = mensaje;
+      alertDiv.className = `p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-sm border ${clasesCss} flex items-center gap-3`;
+      
+      let spinnerHtml = cargando ? `<div class="loader w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full flex-shrink-0"></div>` : '';
+      alertDiv.innerHTML = `${spinnerHtml} <span>${mensaje}</span>`;
       alertDiv.classList.remove('hidden');
+      alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
 </body>
