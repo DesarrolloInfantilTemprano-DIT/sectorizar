@@ -27,7 +27,7 @@
         font-size: 9pt !important;
         padding-bottom: 0 !important;
       }
-      header, .no-print, #statusAlert, #modalConfirmDesvincular {
+      header, .no-print, #statusAlert, #modalConfirmDesvincular, #modalNotificacion {
         display: none !important;
       }
       main {
@@ -111,8 +111,7 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-5 space-y-5">
-    <!-- ALERTA DINÁMICA PRINCIPAL DE ESTADO Y CARGA -->
-    <div id="statusAlert" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-md border no-print flex items-center gap-3"></div>
+    <div id="statusAlert" class="hidden p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-md border no-print"></div>
 
     <!-- PASO 1: DATOS FAMILIARES -->
     <div class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-6 space-y-4">
@@ -200,7 +199,7 @@
             <label for="mz_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mz / Manzana</label>
             <input type="text" id="mz_masivo" placeholder="Ej: 5" 
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm uppercase">
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white shadow-sm">
           </div>
         </div>
 
@@ -349,7 +348,7 @@
 
           <div>
             <label for="fn" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Fecha Nac.</label>
-            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
+            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
           </div>
 
           <div>
@@ -363,7 +362,7 @@
 
           <div>
             <label for="hclinica" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">HC</label>
-            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase font-mono">
+            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
           </div>
 
           <div>
@@ -405,7 +404,7 @@
             <label for="mz" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Mz</label>
             <input type="text" id="mz" name="mz" placeholder="Solo Números" 
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold uppercase shadow-sm">
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold shadow-sm uppercase">
           </div>
         </div>
 
@@ -421,6 +420,24 @@
     </div>
   </main>
 
+  <!-- MODAL DE NOTIFICACIÓN DE CAMBIOS (POP-UP) -->
+  <div id="modalNotificacion" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="p-5 text-center space-y-3">
+        <div id="modalIconoNotif" class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+          <i data-lucide="bell" class="w-6 h-6"></i>
+        </div>
+        <h3 id="modalTituloNotif" class="text-base font-extrabold text-slate-800">Notificación del Sistema</h3>
+        <p id="modalMensajeNotif" class="text-xs text-slate-600 leading-relaxed font-semibold"></p>
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-center">
+        <button type="button" onclick="cerrarModalNotificacion()" class="w-full px-4 py-2 bg-blue-700 hover:bg-blue-800 active:scale-95 text-white font-bold text-xs rounded-xl transition">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DE CONFIRMACIÓN ELEGANTE PARA DESVINCULAR (NO PRINT) -->
   <div id="modalConfirmDesvincular" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -430,7 +447,7 @@
         </div>
         <h3 class="text-base font-extrabold text-slate-800">¿Quitar Integrante de la Ficha?</h3>
         <p class="text-xs text-slate-600 leading-relaxed">
-          ¿Está seguro de quitar a <strong id="modalNombrePersona" class="text-slate-900"></strong> (DNI: <span id="modalDniPersona" class="font-mono font-bold"></span>) de este grupo familiar?
+          ¿Está seguro de quitar a <strong id="modalNombrePersona" class="text-slate-900 uppercase"></strong> (DNI: <span id="modalDniPersona" class="font-mono font-bold"></span>) de este grupo familiar?
         </p>
         <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200/60 text-[11px] text-amber-800 font-medium">
           ℹ️ Los datos de la persona <strong>NO se eliminarán</strong> de la base de datos general.
@@ -591,21 +608,21 @@
       const ffamiliar = String(ffamiliarVal).padStart(7, '0');
       document.getElementById('ffamiliar').value = ffamiliar;
 
-      mostrarAlerta("🔍 Buscando grupo familiar en Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
+      mostrarAlerta("🔍 Buscando grupo familiar...", "bg-blue-50 text-blue-900 border-blue-200");
 
       try {
-        const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&_t=${Date.now()}`);
+        const response = await fetch(`${URL_CENSO}?action=buscarFicha&ffamiliar=${encodeURIComponent(ffamiliar)}`);
         const data = await response.json();
 
         if (data && data.status === "ok" && data.integrantes && data.integrantes.length > 0) {
           listaIntegrantes = data.integrantes;
           
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
-          document.getElementById('georeferencia').value = personaConGps ? String(personaConGps.georeferencia).toUpperCase() : "";
+          document.getElementById('georeferencia').value = personaConGps ? (personaConGps.georeferencia || "").toUpperCase() : "";
 
-          document.getElementById('sector_masivo').value = listaIntegrantes[0].sector ? String(listaIntegrantes[0].sector).toUpperCase() : "";
-          document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion ? String(listaIntegrantes[0].ref_direccion).toUpperCase() : "";
-          document.getElementById('mz_masivo').value = listaIntegrantes[0].mz ? String(listaIntegrantes[0].mz).toUpperCase() : "";
+          document.getElementById('sector_masivo').value = (listaIntegrantes[0].sector || "").toUpperCase();
+          document.getElementById('ref_direccion_masivo').value = (listaIntegrantes[0].ref_direccion || "").toUpperCase();
+          document.getElementById('mz_masivo').value = (listaIntegrantes[0].mz || "").toUpperCase();
 
           renderizarTablaIntegrantes();
           limpiarFormularioPersona();
@@ -683,18 +700,18 @@
     }
 
     async function consultarDniIndividual() {
-      const dni = document.getElementById('dni').value.trim().toUpperCase();
+      const dni = document.getElementById('dni').value.trim();
       if (!/^\d{8}$/.test(dni)) return;
 
-      mostrarAlerta(`🔍 Consultando DNI ${dni} en la base de datos del Censo...`, "bg-blue-50 text-blue-900 border-blue-200", true);
+      mostrarAlerta(`🔍 Consultando DNI ${dni} en la base de datos del Censo...`, "bg-blue-50 text-blue-900 border-blue-200");
 
       try {
-        const response = await fetch(`${URL_CENSO}?action=buscar&dni=${encodeURIComponent(dni)}&_t=${Date.now()}`);
+        const response = await fetch(`${URL_CENSO}?action=buscar&dni=${encodeURIComponent(dni)}`);
         const data = await response.json();
 
         if (data && data.status === "ok") {
           document.getElementById('row').value = data.row || "";
-          document.getElementById('nombreB').value = data.nombreB ? String(data.nombreB).toUpperCase() : "";
+          document.getElementById('nombreB').value = (data.nombreB || "").toUpperCase();
           
           if (data.fn) {
             const partes = data.fn.split('/');
@@ -703,13 +720,13 @@
             document.getElementById('fn').value = "";
           }
 
-          document.getElementById('sexo').value = data.sexo ? String(data.sexo).toUpperCase() : "";
-          document.getElementById('hclinica').value = data.hclinica ? String(data.hclinica).toUpperCase() : "";
-          document.getElementById('telefono').value = data.telefono ? String(data.telefono).toUpperCase() : "";
-          document.getElementById('estado_civil').value = data.estado_civil ? String(data.estado_civil).toUpperCase() : "";
-          document.getElementById('sector').value = data.sector ? String(data.sector).toUpperCase() : "";
-          document.getElementById('ref_direccion').value = data.ref_direccion ? String(data.ref_direccion).toUpperCase() : "";
-          document.getElementById('mz').value = data.mz ? String(data.mz).toUpperCase() : "";
+          document.getElementById('sexo').value = (data.sexo || "").toUpperCase();
+          document.getElementById('hclinica').value = (data.hclinica || "").toUpperCase();
+          document.getElementById('telefono').value = (data.telefono || "").toUpperCase();
+          document.getElementById('estado_civil').value = (data.estado_civil || "").toUpperCase();
+          document.getElementById('sector').value = (data.sector || "").toUpperCase();
+          document.getElementById('ref_direccion').value = (data.ref_direccion || "").toUpperCase();
+          document.getElementById('mz').value = (data.mz || "").toUpperCase();
 
           document.getElementById('ficha_integrante_read').value = data.ffamiliar ? String(data.ffamiliar).padStart(7, '0') : "-- N/A --";
 
@@ -727,9 +744,9 @@
           document.getElementById('estado_civil').value = "";
           document.getElementById('ficha_integrante_read').value = "-- NUEVO --";
 
-          document.getElementById('sector').value = document.getElementById('sector_masivo').value.toUpperCase() || "";
-          document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value.toUpperCase() || "";
-          document.getElementById('mz').value = document.getElementById('mz_masivo').value.toUpperCase() || "";
+          document.getElementById('sector').value = (document.getElementById('sector_masivo').value || "").toUpperCase();
+          document.getElementById('ref_direccion').value = (document.getElementById('ref_direccion_masivo').value || "").toUpperCase();
+          document.getElementById('mz').value = (document.getElementById('mz_masivo').value || "").toUpperCase();
 
           document.getElementById('badgeEstado').textContent = "NUEVO REGISTRO MANUAL";
           document.getElementById('badgeEstado').className = "text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold";
@@ -738,7 +755,6 @@
         }
       } catch (error) {
         console.error("Error al consultar DNI:", error);
-        mostrarAlerta("❌ Error de comunicación al verificar el DNI.", "bg-red-50 text-red-900 border-red-200");
       }
     }
 
@@ -764,7 +780,7 @@
       const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
       if (!persona) return;
 
-      mostrarAlerta(`⏳ Desvinculando a ${(persona.nombreB || '').toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200", true);
+      mostrarAlerta(`⏳ Desvinculando a ${persona.nombreB.toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200");
 
       try {
         const formData = {
@@ -791,12 +807,15 @@
         });
 
         const textResult = await response.text();
-        mostrarAlerta(`✅ ${persona.nombreB.toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
+        const msg = `✅ ${persona.nombreB.toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`;
+        mostrarAlerta(msg, "bg-emerald-50 text-emerald-900 border-emerald-200");
+        mostrarModalNotificacion("Desvinculación Exitosa", msg, "success");
         
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al desvincular:", error);
         mostrarAlerta("❌ Ocurrió un error al intentar desvincular al integrante.", "bg-red-50 text-red-900 border-red-200");
+        mostrarModalNotificacion("Error", "Ocurrió un error al intentar desvincular al integrante.", "error");
       }
     });
 
@@ -822,17 +841,17 @@
       btnDireccionTodos.disabled = true;
       btnDireccionTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Aplicando...`;
 
-      mostrarAlerta("⏳ Actualizando dirección masivamente en Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
-
       try {
-        const response = await fetch(`${URL_CENSO}?action=actualizarDireccionFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&sector=${encodeURIComponent(sector)}&ref_direccion=${encodeURIComponent(refDireccion)}&mz=${encodeURIComponent(mz)}&_t=${Date.now()}`);
+        const response = await fetch(`${URL_CENSO}?action=actualizarDireccionFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&sector=${encodeURIComponent(sector)}&ref_direccion=${encodeURIComponent(refDireccion)}&mz=${encodeURIComponent(mz)}`);
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-blue-50 text-blue-900 border-blue-200");
+        mostrarModalNotificacion("Dirección Actualizada", textResult, "info");
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al actualizar dirección masiva:", error);
         mostrarAlerta("❌ Error al intentar actualizar la dirección masivamente.", "bg-red-50 text-red-900 border-red-200");
+        mostrarModalNotificacion("Error", "Error al intentar actualizar la dirección masivamente.", "error");
       } finally {
         btnDireccionTodos.disabled = false;
         btnDireccionTodos.innerHTML = `<i data-lucide="check-check" class="w-4 h-4"></i> Asignar Sector, Ref y Mz a Todos los DNI`;
@@ -860,17 +879,17 @@
       btnGpsTodos.disabled = true;
       btnGpsTodos.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Actualizando...`;
 
-      mostrarAlerta("⏳ Aplicando coordenadas GPS a todos los integrantes...", "bg-indigo-50 text-indigo-900 border-indigo-200", true);
-
       try {
-        const response = await fetch(`${URL_CENSO}?action=actualizarGpsFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&georeferencia=${encodeURIComponent(gps)}&_t=${Date.now()}`);
+        const response = await fetch(`${URL_CENSO}?action=actualizarGpsFicha&ffamiliar=${encodeURIComponent(ffamiliar)}&georeferencia=${encodeURIComponent(gps)}`);
         const textResult = await response.text();
 
         mostrarAlerta(textResult, "bg-indigo-50 text-indigo-900 border-indigo-200");
+        mostrarModalNotificacion("GPS Actualizado", textResult, "info");
         await buscarFichaFamiliar();
       } catch (error) {
         console.error("Error al actualizar GPS masivo:", error);
         mostrarAlerta("❌ Error al intentar actualizar el GPS masivamente.", "bg-red-50 text-red-900 border-red-200");
+        mostrarModalNotificacion("Error", "Error al intentar actualizar el GPS masivamente.", "error");
       } finally {
         btnGpsTodos.disabled = false;
         btnGpsTodos.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Aplicar a Familia`;
@@ -885,7 +904,7 @@
       if (listaIntegrantes.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="14" class="p-6 text-center text-slate-400 font-medium text-xs uppercase">
+            <td colspan="14" class="p-6 text-center text-slate-400 font-medium text-xs">
               No hay miembros registrados en esta Ficha Familiar.
             </td>
           </tr>`;
@@ -898,21 +917,21 @@
         const edadTexto = edadVal !== null ? `${edadVal} a` : '-';
 
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-blue-50/50 transition font-mono text-[11px] uppercase";
+        tr.className = "hover:bg-blue-50/50 transition font-mono text-[11px]";
         tr.innerHTML = `
           <td class="p-2 border-r font-bold text-slate-500 text-center">${item.row || '-'}</td>
-          <td class="p-2 border-r font-bold text-slate-900">${(item.dni || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-bold text-slate-900 uppercase">${item.dni || ''}</td>
           <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${(item.nombreB || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${item.fn || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600 uppercase">${item.fn || ''}</td>
           <td class="p-2 border-r text-center font-bold text-indigo-700 font-sans">${edadTexto}</td>
-          <td class="p-2 border-r text-center font-bold text-slate-700">${(item.sexo || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.hclinica || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.telefono || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.estado_civil || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.sector || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.ref_direccion || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print">${(item.mz || '').toUpperCase()}</td>
-          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print">${(item.georeferencia || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-center font-bold text-slate-700 uppercase">${(item.sexo || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.hclinica || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.telefono || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 uppercase">${(item.estado_civil || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print uppercase">${(item.sector || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print uppercase">${(item.ref_direccion || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print uppercase">${(item.mz || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print uppercase">${(item.georeferencia || '').toUpperCase()}</td>
           <td class="p-2 text-center font-sans no-print flex justify-center gap-1">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
               class="px-2 py-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-lg font-bold text-[10px] shadow-sm transition" title="Editar Integrante">
@@ -935,7 +954,7 @@
       if (!persona) return;
 
       document.getElementById('row').value = persona.row || "";
-      document.getElementById('dni').value = (persona.dni || "").toUpperCase();
+      document.getElementById('dni').value = persona.dni || "";
       document.getElementById('nombreB').value = (persona.nombreB || "").toUpperCase();
       
       if (persona.fn) {
@@ -984,7 +1003,7 @@
 
       const dataParaExcel = listaIntegrantes.map(item => ({
         "Ficha Familiar": ffam,
-        "DNI": (item.dni || "").toUpperCase(),
+        "DNI": item.dni,
         "Apellidos y Nombres": (item.nombreB || "").toUpperCase(),
         "Fecha Nacimiento": item.fn,
         "Edad": calcularEdadExacta(item.fn) !== null ? calcularEdadExacta(item.fn) : "",
@@ -1032,11 +1051,11 @@
 
       const ffamiliarTexto = String(ffamiliarVal).padStart(7, '0');
 
-      // CONVERSIÓN COMPLETA A MAYÚSCULAS
+      // CONVERSIÓN COMPLETA A MAYÚSCULAS ANTES DE ENVIAR
       const formData = {
         row: document.getElementById('row').value || null,
         ffamiliar: ffamiliarTexto,
-        georeferencia: georeferencia,
+        georeferencia: georeferencia.toUpperCase(),
         dni: String(document.getElementById('dni').value.trim()).toUpperCase(),
         nombreB: document.getElementById('nombreB').value.trim().toUpperCase(),
         fn: document.getElementById('fn').value,
@@ -1044,7 +1063,7 @@
         hclinica: document.getElementById('hclinica').value.trim().toUpperCase(),
         telefono: document.getElementById('telefono').value.trim().toUpperCase(),
         estado_civil: document.getElementById('estado_civil').value.toUpperCase(),
-        sector: sectorVal,
+        sector: sectorVal.toUpperCase(),
         ref_direccion: document.getElementById('ref_direccion').value.trim().toUpperCase(),
         mz: document.getElementById('mz').value.trim().toUpperCase()
       };
@@ -1052,8 +1071,6 @@
       const btnGuardar = document.getElementById('btnGuardar');
       btnGuardar.disabled = true;
       btnGuardar.innerHTML = `<div class="loader w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></div> Guardando...`;
-
-      mostrarAlerta("⏳ Enviando datos a Google Sheets...", "bg-blue-50 text-blue-900 border-blue-200", true);
 
       try {
         const response = await fetch(URL_CENSO, {
@@ -1065,6 +1082,7 @@
 
         const textResult = await response.text();
         mostrarAlerta(textResult, "bg-emerald-50 text-emerald-900 border-emerald-200");
+        mostrarModalNotificacion("Guardado Exitoso", textResult, "success");
 
         await buscarFichaFamiliar();
         prepararFormularioNuevo();
@@ -1072,6 +1090,7 @@
       } catch (error) {
         console.error("Error al guardar:", error);
         mostrarAlerta("⚠️ Ocurrió un error al intentar guardar los datos.", "bg-red-50 text-red-900 border-red-200");
+        mostrarModalNotificacion("Error", "Ocurrió un error al intentar guardar los datos.", "error");
       } finally {
         btnGuardar.disabled = false;
         btnGuardar.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Guardar / Actualizar`;
@@ -1081,7 +1100,6 @@
 
     function obtenerGeolocalizacion() {
       if ("geolocation" in navigator) {
-        mostrarAlerta("📍 Capturando coordenadas GPS...", "bg-blue-50 text-blue-900 border-blue-200", true);
         navigator.geolocation.getCurrentPosition(
           function(position) {
             const lat = position.coords.latitude.toFixed(6);
@@ -1105,15 +1123,40 @@
       document.getElementById('ficha_integrante_read').value = "-- N/A --";
     }
 
-    // MOSTRAR ALERTA CON ANIMACIÓN DE CARGA DINÁMICA
-    function mostrarAlerta(mensaje, clasesCss, cargando = false) {
+    function mostrarAlerta(mensaje, clasesCss) {
       const alertDiv = document.getElementById('statusAlert');
-      alertDiv.className = `p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-sm border ${clasesCss} flex items-center gap-3`;
-      
-      let spinnerHtml = cargando ? `<div class="loader w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full flex-shrink-0"></div>` : '';
-      alertDiv.innerHTML = `${spinnerHtml} <span>${mensaje}</span>`;
+      alertDiv.className = `p-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all shadow-sm border ${clasesCss}`;
+      alertDiv.innerHTML = mensaje;
       alertDiv.classList.remove('hidden');
-      alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // MODAL DE NOTIFICACIÓN QUE SALTA EN PANTALLA
+    function mostrarModalNotificacion(titulo, mensaje, tipo = "info") {
+      const modal = document.getElementById('modalNotificacion');
+      const modalTitulo = document.getElementById('modalTituloNotif');
+      const modalMensaje = document.getElementById('modalMensajeNotif');
+      const modalIcono = document.getElementById('modalIconoNotif');
+
+      modalTitulo.textContent = titulo;
+      modalMensaje.textContent = mensaje;
+
+      if (tipo === "success") {
+        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600";
+        modalIcono.innerHTML = `<i data-lucide="check-circle" class="w-6 h-6"></i>`;
+      } else if (tipo === "error") {
+        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600";
+        modalIcono.innerHTML = `<i data-lucide="alert-triangle" class="w-6 h-6"></i>`;
+      } else {
+        modalIcono.className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600";
+        modalIcono.innerHTML = `<i data-lucide="info" class="w-6 h-6"></i>`;
+      }
+
+      lucide.createIcons();
+      modal.classList.remove('hidden');
+    }
+
+    function cerrarModalNotificacion() {
+      document.getElementById('modalNotificacion').classList.add('hidden');
     }
   </script>
 </body>
