@@ -138,7 +138,7 @@
             <input type="text" id="ffamiliar" name="ffamiliar" required pattern="[0-9]{1,7}" maxlength="7"
               placeholder="Ej: 0001234"
               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-              class="w-full pl-3 pr-12 py-2.5 bg-slate-50 border border-slate-200 text-slate-800 text-base font-mono font-bold focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition uppercase">
+              class="w-full pl-3 pr-12 py-2.5 bg-slate-50 border border-slate-200 text-slate-800 text-base font-mono font-bold focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition">
             <button type="button" onclick="buscarFichaFamiliar()" title="Consultar Ficha Familiar"
               class="absolute right-1 top-1 bottom-1 px-3 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white rounded-lg flex items-center justify-center transition shadow-sm no-print">
               <i data-lucide="search" class="w-4 h-4"></i>
@@ -152,7 +152,7 @@
           </label>
           <div class="flex flex-col sm:flex-row gap-2">
             <input type="text" id="georeferencia" name="georeferencia" readonly placeholder="-9.XXXXX, -75.XXXXX"
-              class="flex-1 px-3 py-2.5 border border-slate-200 bg-slate-100/70 rounded-xl outline-none text-slate-600 font-mono text-xs font-semibold uppercase">
+              class="flex-1 px-3 py-2.5 border border-slate-200 bg-slate-100/70 rounded-xl outline-none text-slate-600 font-mono text-xs font-semibold">
             
             <div class="flex gap-2 no-print">
               <button type="button" onclick="obtenerGeolocalizacion()"
@@ -181,7 +181,6 @@
             <div class="relative flex items-center">
               <input type="text" id="sector_masivo" readonly placeholder="SELECCIONE SECTOR..." 
                 onclick="abrirModalSectores('sector_masivo')"
-                oninput="this.value = this.value.toUpperCase()"
                 class="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white cursor-pointer select-none shadow-sm">
               <button type="button" onclick="abrirModalSectores('sector_masivo')" title="Buscar Sector Registrado"
                 class="absolute right-1 top-1 bottom-1 px-2.5 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-lg transition flex items-center justify-center border border-slate-200 no-print">
@@ -193,15 +192,14 @@
           <div>
             <label for="ref_direccion_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Ref. Dirección</label>
             <input type="text" id="ref_direccion_masivo" placeholder="Ej: Av. Principal / Frente al parque" 
-              oninput="this.value = this.value.toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white shadow-sm">
           </div>
 
           <div>
             <label for="mz_masivo" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mz / Manzana</label>
             <input type="text" id="mz_masivo" placeholder="Ej: 5" 
-              oninput="this.value = this.value.replace(/[^0-9]/g, '').toUpperCase()"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white shadow-sm">
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm">
           </div>
         </div>
 
@@ -323,7 +321,7 @@
             <div class="relative flex rounded-xl overflow-hidden shadow-sm">
               <input type="text" id="dni" name="dni" required pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos"
                 oninput="this.value = this.value.replace(/[^0-9]/g, ''); evaluarConsultaDNI(this.value)"
-                class="w-full pl-3 pr-8 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs font-bold text-slate-800 uppercase">
+                class="w-full pl-3 pr-8 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs font-bold text-slate-800">
               <button type="button" onclick="consultarDniIndividual()" title="Buscar DNI en Censo"
                 class="absolute right-1 top-1 bottom-1 px-2 text-slate-400 hover:text-blue-600 transition">
                 <i data-lucide="search" class="w-4 h-4"></i>
@@ -337,7 +335,7 @@
             </label>
             <div class="relative">
               <input type="text" id="ficha_integrante_read" readonly placeholder="-- N/A --"
-                class="w-full pl-8 pr-3 py-2 border border-slate-200 bg-slate-100 rounded-xl text-xs font-mono font-bold text-blue-800 outline-none select-none uppercase">
+                class="w-full pl-8 pr-3 py-2 border border-slate-200 bg-slate-100 rounded-xl text-xs font-mono font-bold text-blue-800 outline-none select-none">
               <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-500 absolute left-2.5 top-2.5"></i>
             </div>
           </div>
@@ -345,19 +343,18 @@
           <div class="sm:col-span-2 md:col-span-2">
             <label for="nombreB" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Apellidos y Nombres<span class="text-red-500">*</span></label>
             <input type="text" id="nombreB" name="nombreB" required placeholder="NOMBRES Y APELLIDOS COMPLETOS"
-              oninput="this.value = this.value.toUpperCase()"
               class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none uppercase font-semibold text-slate-800 shadow-sm">
           </div>
 
           <div>
             <label for="fn" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Fecha Nac.</label>
-            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
+            <input type="date" id="fn" name="fn" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
           </div>
 
           <div>
             <label for="sexo" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Sexo</label>
-            <select id="sexo" name="sexo" onchange="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
-              <option value="">-- SELECCIONAR --</option>
+            <select id="sexo" name="sexo" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm">
+              <option value="">-- Seleccionar --</option>
               <option value="M">MASCULINO</option>
               <option value="F">FEMENINO</option>
             </select>
@@ -365,18 +362,18 @@
 
           <div>
             <label for="hclinica" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">HC</label>
-            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm uppercase">
+            <input type="text" id="hclinica" name="hclinica" placeholder="Nº HC" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
           </div>
 
           <div>
             <label for="telefono" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Celular</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm uppercase">
+            <input type="tel" id="telefono" name="telefono" maxlength="9" placeholder="9XXXXXXXX" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono shadow-sm">
           </div>
 
           <div>
             <label for="estado_civil" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Estado Civil</label>
-            <select id="estado_civil" name="estado_civil" onchange="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm uppercase">
-              <option value="">-- SELECCIONAR --</option>
+            <select id="estado_civil" name="estado_civil" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm">
+              <option value="">-- Seleccionar --</option>
               <option value="SOLTERO">SOLTERO</option>
               <option value="CASADO">CASADO</option>
               <option value="CONVIVIENTE">CONVIVIENTE</option>
@@ -390,7 +387,6 @@
             <div class="relative flex items-center">
               <input type="text" id="sector" name="sector" readonly placeholder="SELECCIONE SECTOR..." 
                 onclick="abrirModalSectores('sector')"
-                oninput="this.value = this.value.toUpperCase()"
                 class="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none uppercase bg-white cursor-pointer select-none shadow-sm">
               <button type="button" onclick="abrirModalSectores('sector')" title="Buscar Sector Registrado"
                 class="absolute right-1 top-1 bottom-1 px-2.5 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-lg transition flex items-center justify-center border border-slate-200">
@@ -401,14 +397,14 @@
 
           <div>
             <label for="ref_direccion" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Ref. Dirección</label>
-            <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" oninput="this.value = this.value.toUpperCase()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase shadow-sm">
+            <input type="text" id="ref_direccion" name="ref_direccion" placeholder="Ej: Av. Principal" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase shadow-sm">
           </div>
 
           <div>
             <label for="mz" class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Mz</label>
             <input type="text" id="mz" name="mz" placeholder="Solo Números" 
-              oninput="this.value = this.value.replace(/[^0-9]/g, '').toUpperCase()"
-              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold shadow-sm uppercase">
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 font-mono font-bold shadow-sm">
           </div>
         </div>
 
@@ -433,7 +429,7 @@
         </div>
         <h3 class="text-base font-extrabold text-slate-800">¿Quitar Integrante de la Ficha?</h3>
         <p class="text-xs text-slate-600 leading-relaxed">
-          ¿Está seguro de quitar a <strong id="modalNombrePersona" class="text-slate-900 uppercase"></strong> (DNI: <span id="modalDniPersona" class="font-mono font-bold"></span>) de este grupo familiar?
+          ¿Está seguro de quitar a <strong id="modalNombrePersona" class="text-slate-900"></strong> (DNI: <span id="modalDniPersona" class="font-mono font-bold"></span>) de este grupo familiar?
         </p>
         <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200/60 text-[11px] text-amber-800 font-medium">
           ℹ️ Los datos de la persona <strong>NO se eliminarán</strong> de la base de datos general.
@@ -463,7 +459,7 @@
       </div>
       
       <div class="p-3.5 border-b bg-slate-50">
-        <input type="text" id="filtroSectores" oninput="filtrarListaSectores(this.value.toUpperCase())" placeholder="Escriba para buscar sector..."
+        <input type="text" id="filtroSectores" oninput="filtrarListaSectores(this.value)" placeholder="Escriba para buscar sector..."
           class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 uppercase font-medium bg-white shadow-sm">
       </div>
 
@@ -551,9 +547,9 @@
       lista.forEach(sec => {
         const item = document.createElement('button');
         item.type = 'button';
-        item.className = "w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-xl border border-transparent hover:border-blue-200 transition flex items-center justify-between uppercase";
-        item.innerHTML = `<span>${sec.toUpperCase()}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
-        item.onclick = () => seleccionarSectorModal(sec.toUpperCase());
+        item.className = "w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 font-semibold text-xs rounded-xl border border-transparent hover:border-blue-200 transition flex items-center justify-between";
+        item.innerHTML = `<span>${sec}</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-500"></i>`;
+        item.onclick = () => seleccionarSectorModal(sec);
         cont.appendChild(item);
       });
       lucide.createIcons();
@@ -567,7 +563,7 @@
 
     function seleccionarSectorModal(sectorSeleccionado) {
       if (idInputSectorDestino) {
-        document.getElementById(idInputSectorDestino).value = sectorSeleccionado.toUpperCase();
+        document.getElementById(idInputSectorDestino).value = sectorSeleccionado;
       }
       cerrarModalSectores();
     }
@@ -604,11 +600,11 @@
           listaIntegrantes = data.integrantes;
           
           const personaConGps = listaIntegrantes.find(p => p.georeferencia);
-          document.getElementById('georeferencia').value = personaConGps ? (personaConGps.georeferencia || "").toUpperCase() : "";
+          document.getElementById('georeferencia').value = personaConGps ? personaConGps.georeferencia : "";
 
-          document.getElementById('sector_masivo').value = (listaIntegrantes[0].sector || "").toUpperCase();
-          document.getElementById('ref_direccion_masivo').value = (listaIntegrantes[0].ref_direccion || "").toUpperCase();
-          document.getElementById('mz_masivo').value = (listaIntegrantes[0].mz || "").toUpperCase();
+          document.getElementById('sector_masivo').value = listaIntegrantes[0].sector || "";
+          document.getElementById('ref_direccion_masivo').value = listaIntegrantes[0].ref_direccion || "";
+          document.getElementById('mz_masivo').value = listaIntegrantes[0].mz || "";
 
           renderizarTablaIntegrantes();
           limpiarFormularioPersona();
@@ -697,7 +693,7 @@
 
         if (data && data.status === "ok") {
           document.getElementById('row').value = data.row || "";
-          document.getElementById('nombreB').value = (data.nombreB || "").toUpperCase();
+          document.getElementById('nombreB').value = data.nombreB || "";
           
           if (data.fn) {
             const partes = data.fn.split('/');
@@ -706,13 +702,13 @@
             document.getElementById('fn').value = "";
           }
 
-          document.getElementById('sexo').value = (data.sexo || "").toUpperCase();
-          document.getElementById('hclinica').value = (data.hclinica || "").toUpperCase();
-          document.getElementById('telefono').value = (data.telefono || "").toUpperCase();
-          document.getElementById('estado_civil').value = (data.estado_civil || "").toUpperCase();
-          document.getElementById('sector').value = (data.sector || "").toUpperCase();
-          document.getElementById('ref_direccion').value = (data.ref_direccion || "").toUpperCase();
-          document.getElementById('mz').value = (data.mz || "").toUpperCase();
+          document.getElementById('sexo').value = data.sexo || "";
+          document.getElementById('hclinica').value = data.hclinica || "";
+          document.getElementById('telefono').value = data.telefono || "";
+          document.getElementById('estado_civil').value = data.estado_civil || "";
+          document.getElementById('sector').value = data.sector || "";
+          document.getElementById('ref_direccion').value = data.ref_direccion || "";
+          document.getElementById('mz').value = data.mz || "";
 
           document.getElementById('ficha_integrante_read').value = data.ffamiliar ? String(data.ffamiliar).padStart(7, '0') : "-- N/A --";
 
@@ -730,9 +726,9 @@
           document.getElementById('estado_civil').value = "";
           document.getElementById('ficha_integrante_read').value = "-- NUEVO --";
 
-          document.getElementById('sector').value = (document.getElementById('sector_masivo').value || "").toUpperCase();
-          document.getElementById('ref_direccion').value = (document.getElementById('ref_direccion_masivo').value || "").toUpperCase();
-          document.getElementById('mz').value = (document.getElementById('mz_masivo').value || "").toUpperCase();
+          document.getElementById('sector').value = document.getElementById('sector_masivo').value || "";
+          document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value || "";
+          document.getElementById('mz').value = document.getElementById('mz_masivo').value || "";
 
           document.getElementById('badgeEstado').textContent = "NUEVO REGISTRO MANUAL";
           document.getElementById('badgeEstado').className = "text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-0.5 rounded-full font-mono font-bold";
@@ -747,7 +743,7 @@
     // ABRIR MODAL ELEGANTE PARA DESVINCULAR INTEGRANTE
     function abrirModalDesvincular(dni, nombre) {
       dniParaDesvincular = dni;
-      document.getElementById('modalNombrePersona').textContent = nombre.toUpperCase();
+      document.getElementById('modalNombrePersona').textContent = nombre;
       document.getElementById('modalDniPersona').textContent = dni;
       document.getElementById('modalConfirmDesvincular').classList.remove('hidden');
     }
@@ -766,23 +762,23 @@
       const persona = listaIntegrantes.find(p => String(p.dni).trim() === String(dni).trim());
       if (!persona) return;
 
-      mostrarAlerta(`⏳ Desvinculando a ${(persona.nombreB || '').toUpperCase()}...`, "bg-amber-50 text-amber-900 border-amber-200");
+      mostrarAlerta(`⏳ Desvinculando a ${persona.nombreB}...`, "bg-amber-50 text-amber-900 border-amber-200");
 
       try {
         const formData = {
           row: persona.row,
           ffamiliar: "0000000",
-          georeferencia: (persona.georeferencia || "").toUpperCase(),
-          dni: String(persona.dni).toUpperCase(),
-          nombreB: (persona.nombreB || "").toUpperCase(),
+          georeferencia: persona.georeferencia || "",
+          dni: persona.dni,
+          nombreB: persona.nombreB,
           fn: persona.fn || "",
-          sexo: (persona.sexo || "").toUpperCase(),
-          hclinica: (persona.hclinica || "").toUpperCase(),
-          telefono: (persona.telefono || "").toUpperCase(),
-          estado_civil: (persona.estado_civil || "").toUpperCase(),
-          sector: (persona.sector || "").toUpperCase(),
-          ref_direccion: (persona.ref_direccion || "").toUpperCase(),
-          mz: (persona.mz || "").toUpperCase()
+          sexo: persona.sexo || "",
+          hclinica: persona.hclinica || "",
+          telefono: persona.telefono || "",
+          estado_civil: persona.estado_civil || "",
+          sector: persona.sector || "",
+          ref_direccion: persona.ref_direccion || "",
+          mz: persona.mz || ""
         };
 
         const response = await fetch(URL_CENSO, {
@@ -793,7 +789,7 @@
         });
 
         const textResult = await response.text();
-        mostrarAlerta(`✅ ${(persona.nombreB || '').toUpperCase()} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
+        mostrarAlerta(`✅ ${persona.nombreB} fue desvinculado con éxito de esta ficha. Sus datos permanecen seguros.`, "bg-emerald-50 text-emerald-900 border-emerald-200");
         
         await buscarFichaFamiliar();
       } catch (error) {
@@ -804,9 +800,9 @@
 
     async function actualizarDireccionTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const sector = document.getElementById('sector_masivo').value.trim().toUpperCase();
-      const refDireccion = document.getElementById('ref_direccion_masivo').value.trim().toUpperCase();
-      const mz = document.getElementById('mz_masivo').value.trim().toUpperCase();
+      const sector = document.getElementById('sector_masivo').value.trim();
+      const refDireccion = document.getElementById('ref_direccion_masivo').value.trim();
+      const mz = document.getElementById('mz_masivo').value.trim();
 
       if (!ffamiliarVal) {
         mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida en el Paso 1.", "bg-amber-50 text-amber-900 border-amber-200");
@@ -842,7 +838,7 @@
 
     async function actualizarGpsTodosIntegrantes() {
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const gps = document.getElementById('georeferencia').value.trim().toUpperCase();
+      const gps = document.getElementById('georeferencia').value.trim();
 
       if (!ffamiliarVal) {
         mostrarAlerta("⚠️ Debe indicar una Ficha Familiar válida en el Paso 1.", "bg-amber-50 text-amber-900 border-amber-200");
@@ -900,23 +896,23 @@
         tr.innerHTML = `
           <td class="p-2 border-r font-bold text-slate-500 text-center">${item.row || '-'}</td>
           <td class="p-2 border-r font-bold text-slate-900">${item.dni || ''}</td>
-          <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${(item.nombreB || '').toUpperCase()}</td>
+          <td class="p-2 border-r font-sans font-bold uppercase text-slate-800">${item.nombreB || ''}</td>
           <td class="p-2 border-r font-sans text-slate-600">${item.fn || ''}</td>
           <td class="p-2 border-r text-center font-bold text-indigo-700 font-sans">${edadTexto}</td>
-          <td class="p-2 border-r text-center font-bold text-slate-700">${(item.sexo || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.hclinica || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.telefono || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600">${(item.estado_civil || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.sector || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${(item.ref_direccion || '').toUpperCase()}</td>
-          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print">${(item.mz || '').toUpperCase()}</td>
-          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print">${(item.georeferencia || '').toUpperCase()}</td>
+          <td class="p-2 border-r text-center font-bold text-slate-700">${item.sexo || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${item.hclinica || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${item.telefono || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600">${item.estado_civil || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${item.sector || ''}</td>
+          <td class="p-2 border-r font-sans text-slate-600 col-repeat-print">${item.ref_direccion || ''}</td>
+          <td class="p-2 border-r font-sans font-bold text-blue-900 text-center col-repeat-print">${item.mz || ''}</td>
+          <td class="p-2 border-r text-[10px] font-bold text-indigo-600 col-repeat-print">${item.georeferencia || ''}</td>
           <td class="p-2 text-center font-sans no-print flex justify-center gap-1">
             <button onclick="cargarPersonaEnFormulario('${item.dni}')" 
               class="px-2 py-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-lg font-bold text-[10px] shadow-sm transition" title="Editar Integrante">
               Editar
             </button>
-            <button onclick="abrirModalDesvincular('${item.dni}', '${(item.nombreB || '').replace(/'/g, "\\'").toUpperCase()}')" 
+            <button onclick="abrirModalDesvincular('${item.dni}', '${item.nombreB.replace(/'/g, "\\'")}')" 
               class="px-2 py-1 bg-red-100 hover:bg-red-200 active:scale-95 text-red-700 rounded-lg font-bold text-[10px] border border-red-200 transition" title="Quitar de este grupo sin borrar datos">
               Quitar
             </button>
@@ -934,7 +930,7 @@
 
       document.getElementById('row').value = persona.row || "";
       document.getElementById('dni').value = persona.dni || "";
-      document.getElementById('nombreB').value = (persona.nombreB || "").toUpperCase();
+      document.getElementById('nombreB').value = persona.nombreB || "";
       
       if (persona.fn) {
         const partes = persona.fn.split('/');
@@ -943,13 +939,13 @@
         document.getElementById('fn').value = "";
       }
 
-      document.getElementById('sexo').value = (persona.sexo || "").toUpperCase();
-      document.getElementById('hclinica').value = (persona.hclinica || "").toUpperCase();
-      document.getElementById('telefono').value = (persona.telefono || "").toUpperCase();
-      document.getElementById('estado_civil').value = (persona.estado_civil || "").toUpperCase();
-      document.getElementById('sector').value = (persona.sector || "").toUpperCase();
-      document.getElementById('ref_direccion').value = (persona.ref_direccion || "").toUpperCase();
-      document.getElementById('mz').value = (persona.mz || "").toUpperCase();
+      document.getElementById('sexo').value = persona.sexo || "";
+      document.getElementById('hclinica').value = persona.hclinica || "";
+      document.getElementById('telefono').value = persona.telefono || "";
+      document.getElementById('estado_civil').value = persona.estado_civil || "";
+      document.getElementById('sector').value = persona.sector || "";
+      document.getElementById('ref_direccion').value = persona.ref_direccion || "";
+      document.getElementById('mz').value = persona.mz || "";
 
       const ffamActual = document.getElementById('ffamiliar').value.trim();
       document.getElementById('ficha_integrante_read').value = ffamActual ? String(ffamActual).padStart(7, '0') : "-- N/A --";
@@ -968,9 +964,9 @@
       const ffamActual = document.getElementById('ffamiliar').value.trim();
       document.getElementById('ficha_integrante_read').value = ffamActual ? String(ffamActual).padStart(7, '0') : "-- NUEVO --";
 
-      if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value.toUpperCase();
-      if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value.toUpperCase();
-      if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value.toUpperCase();
+      if (document.getElementById('sector_masivo').value) document.getElementById('sector').value = document.getElementById('sector_masivo').value;
+      if (document.getElementById('ref_direccion_masivo').value) document.getElementById('ref_direccion').value = document.getElementById('ref_direccion_masivo').value;
+      if (document.getElementById('mz_masivo').value) document.getElementById('mz').value = document.getElementById('mz_masivo').value;
     }
 
     function exportarExcel() {
@@ -983,17 +979,17 @@
       const dataParaExcel = listaIntegrantes.map(item => ({
         "Ficha Familiar": ffam,
         "DNI": item.dni,
-        "Apellidos y Nombres": (item.nombreB || "").toUpperCase(),
+        "Apellidos y Nombres": item.nombreB,
         "Fecha Nacimiento": item.fn,
         "Edad": calcularEdadExacta(item.fn) !== null ? calcularEdadExacta(item.fn) : "",
-        "Sexo": (item.sexo || "").toUpperCase(),
-        "HC": (item.hclinica || "").toUpperCase(),
-        "Teléfono": (item.telefono || "").toUpperCase(),
-        "Estado Civil": (item.estado_civil || "").toUpperCase(),
-        "Sector": (item.sector || "").toUpperCase(),
-        "Referencia Dirección": (item.ref_direccion || "").toUpperCase(),
-        "Manzana": (item.mz || "").toUpperCase(),
-        "GPS": (item.georeferencia || "").toUpperCase()
+        "Sexo": item.sexo,
+        "HC": item.hclinica,
+        "Teléfono": item.telefono,
+        "Estado Civil": item.estado_civil,
+        "Sector": item.sector,
+        "Referencia Dirección": item.ref_direccion,
+        "Manzana": item.mz,
+        "GPS": item.georeferencia
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(dataParaExcel);
@@ -1015,8 +1011,8 @@
       e.preventDefault();
 
       let ffamiliarVal = document.getElementById('ffamiliar').value.trim();
-      const georeferencia = document.getElementById('georeferencia').value.trim().toUpperCase();
-      const sectorVal = document.getElementById('sector').value.trim().toUpperCase();
+      const georeferencia = document.getElementById('georeferencia').value.trim();
+      const sectorVal = document.getElementById('sector').value.trim();
 
       if (!ffamiliarVal) {
         mostrarAlerta("❌ Debe ingresar/asignar una Ficha Familiar en la sección 1 superior.", "bg-red-50 text-red-900 border-red-200");
@@ -1034,16 +1030,16 @@
         row: document.getElementById('row').value || null,
         ffamiliar: ffamiliarTexto,
         georeferencia: georeferencia,
-        dni: String(document.getElementById('dni').value.trim()).toUpperCase(),
-        nombreB: document.getElementById('nombreB').value.trim().toUpperCase(),
+        dni: String(document.getElementById('dni').value.trim()),
+        nombreB: document.getElementById('nombreB').value.trim(),
         fn: document.getElementById('fn').value,
-        sexo: document.getElementById('sexo').value.toUpperCase(),
-        hclinica: document.getElementById('hclinica').value.trim().toUpperCase(),
-        telefono: document.getElementById('telefono').value.trim().toUpperCase(),
-        estado_civil: document.getElementById('estado_civil').value.toUpperCase(),
+        sexo: document.getElementById('sexo').value,
+        hclinica: document.getElementById('hclinica').value.trim(),
+        telefono: document.getElementById('telefono').value.trim(),
+        estado_civil: document.getElementById('estado_civil').value,
         sector: sectorVal,
-        ref_direccion: document.getElementById('ref_direccion').value.trim().toUpperCase(),
-        mz: document.getElementById('mz').value.trim().toUpperCase()
+        ref_direccion: document.getElementById('ref_direccion').value.trim(),
+        mz: document.getElementById('mz').value.trim()
       };
 
       const btnGuardar = document.getElementById('btnGuardar');
@@ -1080,7 +1076,7 @@
           function(position) {
             const lat = position.coords.latitude.toFixed(6);
             const lng = position.coords.longitude.toFixed(6);
-            document.getElementById('georeferencia').value = `${lat}, ${lng}`.toUpperCase();
+            document.getElementById('georeferencia').value = `${lat}, ${lng}`;
             mostrarAlerta("📍 Ubicación GPS capturada correctamente.", "bg-emerald-50 text-emerald-900 border-emerald-200");
           },
           function(error) {
